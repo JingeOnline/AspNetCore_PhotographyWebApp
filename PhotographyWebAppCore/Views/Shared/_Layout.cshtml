@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PhotographyWebAppCore</title>
     <link href="~/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bricklayer/bricklayer.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -48,7 +49,7 @@
                             经典案例
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">人像写真</a>
+                            <a class="dropdown-item" asp-controller="PhotoCategory" asp-action="Index">人像写真</a>
                             <a class="dropdown-item" href="#">婚纱摄影</a>
                             <a class="dropdown-item" href="#">婚礼记录</a>
                             <a class="dropdown-item" href="#">儿童摄影</a>
@@ -63,7 +64,7 @@
                         <a class="nav-link" href="#">在线服务</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">关于我们</a>
+                        <a class="nav-link" href="#">走进摄影师</a>
                     </li>
                 </ul>
             </div>
@@ -71,9 +72,9 @@
     </header>
     @*<div class="container">
         <main role="main" class="pb-3">*@
-            @RenderBody()
-        @*</main>
-    </div>*@
+    @RenderBody()
+    @*</main>
+        </div>*@
 
     <footer class="border-top footer text-muted">
         <div class="container">
@@ -83,6 +84,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bricklayer/bricklayer.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>

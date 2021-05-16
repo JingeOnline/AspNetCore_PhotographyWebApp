@@ -5,6 +5,10 @@
     {
       "library": "twitter-bootstrap@4.5.3",
       "destination": "wwwroot/twitter-bootstrap/"
+    },
+    {
+      "library": "bricklayer@0.4.3",
+      "destination": "wwwroot/lib/bricklayer/"
     }
   ]
 }

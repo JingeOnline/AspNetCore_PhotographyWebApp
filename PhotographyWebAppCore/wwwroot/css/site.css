@@ -1,6 +1,21 @@
-﻿nav.navbar .navbar-logo{
-    height:3rem;
+﻿nav.navbar .navbar-logo {
+    height: 3rem;
 }
-nav.navbar .nav-item{
-    margin:0 3rem
+
+nav.navbar .nav-item {
+    margin: 0 3rem
+}
+
+/*此处覆盖bricklayer.css中的设置，自定义瀑布流显示的列数*/
+/*注意，若要覆盖bricklayer.css中的设置，在_Layout.cshtml中，引用site.css必须放在引用bricklayer.css的后面。*/
+@media screen and (min-width: 768px) {
+    .bricklayer-column-sizer {
+        width: 50%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .bricklayer-column-sizer {
+        width: 33.333%;
+    }
 }
