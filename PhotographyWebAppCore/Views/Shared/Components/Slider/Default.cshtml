@@ -2,10 +2,13 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @using PhotographyWebAppCore.Models
-@model List<SlideModel>
+@model List<Album>
 @{
 }
 @*滑动幻灯片*@
+@if (Model!=null && Model.Count() > 0) 
+{ 
+
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         @for (int i = 0; i < Model.Count(); i++)
@@ -26,7 +29,7 @@
             if (i == 0)
             {
                 <div class="carousel-item active">
-                    <img src="@Model[i].ImagePath" class="d-block w-100" alt="...">
+                    <img src="@Model[i].CoverPhoto.Path_Origional" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>@Model[i].Title</h5>
                         <p>@Model[i].Description</p>
@@ -36,7 +39,7 @@
             else
             {
                 <div class="carousel-item">
-                    <img src="@Model[i].ImagePath" class="d-block w-100" alt="...">
+                    <img src="@Model[i].CoverPhoto.Path_Origional" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>@Model[i].Title</h5>
                         <p>@Model[i].Description</p>
@@ -55,3 +58,4 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
+}

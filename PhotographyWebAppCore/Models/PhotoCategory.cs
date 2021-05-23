@@ -8,10 +8,11 @@ namespace PhotographyWebAppCore.Models
 {
     public class PhotoCategory
     {
+        [Key]
         public int Id { get; set; }
-        [Required,Display(Name ="类名")]
+        [Required,Display(Name ="类名"),MaxLength(64)]
         public string Name { get; set; }
-        [Required,Display(Name="类型描述")]
+        [Required,Display(Name="类型描述"),MaxLength(length:1024)]
         public string Description { get; set; }
     }
 }
