@@ -25,6 +25,7 @@ namespace PhotographyWebAppCore.Models
         [ForeignKey("Avatar")]
         public int? AvatarId { get; set; }
         
+        //当两个类型之间定义了多个导航属性，必须手动配置
         [InverseProperty("Photographer")]
         [Display(Name ="关联的所有照片")]
         public List<Photo> Photos { get; set; }

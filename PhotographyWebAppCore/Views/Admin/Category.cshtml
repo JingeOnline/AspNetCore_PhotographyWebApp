@@ -1,0 +1,30 @@
+﻿@using PhotographyWebAppCore.Models
+@model List<PhotoCategory>
+
+<h1>类型</h1>
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (PhotoCategory category in Model)
+    {
+        <div class="card text-center my-5">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">编辑</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">删除</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@category.Name</h5>
+                <p class="card-text text-left">@category.Description</p>
+            </div>
+        </div>
+    }
+}
+
+<div class="text-center">
+    <a href="#" class="btn btn-primary text-center">+ 创建新类型</a>
+</div>

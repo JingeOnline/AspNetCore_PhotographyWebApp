@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotographyWebAppCore.Models
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext
     {
         public DbSet<Photo> Photo { get; set; }
         public DbSet<Album> Album { get; set; }
@@ -32,6 +33,7 @@ namespace PhotographyWebAppCore.Models
             //modelBuilder.Entity<Photographer>()
             //    .HasOne(x=>x.Avatar)
             //    .WithOne(y=>y.)
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
