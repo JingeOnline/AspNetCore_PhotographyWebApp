@@ -25,7 +25,7 @@ namespace PhotographyWebAppCore.Models
                 .Property(x => x.LastUpdate)
                 .HasDefaultValueSql("GETUTCDATE()");
             modelBuilder.Entity<Photo>()
-                .Property(x => x.LastUpdate)
+                .Property(x => x.LastUpdateDateTime)
                 .HasDefaultValueSql("GETUTCDATE()");
             //modelBuilder.Entity<Photo>()
             //    .HasOne(x => x.Photographer)

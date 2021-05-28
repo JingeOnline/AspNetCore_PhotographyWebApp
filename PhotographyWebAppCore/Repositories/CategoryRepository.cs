@@ -21,6 +21,11 @@ namespace PhotographyWebAppCore.Repositories
             return await _context.PhotoCategory.ToListAsync();
         }
 
+        public async Task<PhotoCategory> GetById(int id)
+        {
+            return await _context.PhotoCategory.FindAsync(id);
+        }
+
         public async Task<PhotoCategory> CreateOne(PhotoCategory photoCategory)
         {
             await _context.PhotoCategory.AddAsync(photoCategory);
@@ -37,9 +42,10 @@ namespace PhotographyWebAppCore.Repositories
             return category;
         }
 
-        public void DeleteOne(PhotoCategory photoCategory)
+        public async Task DeleteById(int id)
         {
-            _context.PhotoCategory.Remove(photoCategory);
+            PhotoCategory category = await _context.PhotoCategory.FindAsync(id);
+            _context.PhotoCategory.Remove(category);
             _context.SaveChanges();
         }
     }

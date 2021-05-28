@@ -2,29 +2,38 @@
 @model List<PhotoCategory>
 
 <h1>类型</h1>
+
+<h4>当前所有类型</h4>
+<hr />
 @if (Model != null && Model.Count() > 0)
 {
     @foreach (PhotoCategory category in Model)
     {
-        <div class="card text-center my-5">
-            <div class="card-header">
-                <ul class="nav nav-pills card-header-pills">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">编辑</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">删除</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">@category.Name</h5>
-                <p class="card-text text-left">@category.Description</p>
+        <div class="col-md-10 mx-auto">
+            <div class="card text-center my-5">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <form method="get">
+                                <button class="btn btn-outline-primary" name="id" value="@category.Id" asp-action="UpdateCategory">编辑</button>
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post">
+                                <button class="btn btn-outline-primary" name="id" value="@category.Id" asp-action="DeleteCategory">删除</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@category.Name</h5>
+                    <p class="card-text text-left">@category.Description</p>
+                </div>
             </div>
         </div>
     }
 }
 
-<div class="text-center">
-    <a href="#" class="btn btn-primary text-center">+ 创建新类型</a>
+<div class="text-center mb-5">
+    <a asp-action="CreateCategory" class="btn btn-primary text-center">+ 创建新类型</a>
 </div>

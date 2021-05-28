@@ -7,8 +7,9 @@ namespace PhotographyWebAppCore.Repositories
     public interface ICategoryRepository
     {
         Task<PhotoCategory> CreateOne(PhotoCategory photoCategory);
-        void DeleteOne(PhotoCategory photoCategory);
+        Task DeleteById(int id);
         Task<List<PhotoCategory>> GetAll();
+        Task<PhotoCategory> GetById(int id);
         Task<PhotoCategory> UpdateOne(PhotoCategory photoCategory);
     }
 }

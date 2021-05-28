@@ -19,10 +19,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\photos\" />
+    <Folder Include="wwwroot\images\photos_origional\" />
     <Folder Include="wwwroot\images\photos_big\" />
     <Folder Include="wwwroot\images\photos_middle\" />
     <Folder Include="wwwroot\images\photos_small\" />
