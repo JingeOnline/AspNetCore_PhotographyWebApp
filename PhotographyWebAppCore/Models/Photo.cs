@@ -12,9 +12,13 @@ namespace PhotographyWebAppCore.Models
     {
         [Key]
         public int Id { get; set; }
+
         [MaxLength(64)]
+        [Display(Name ="照片名称")]
         public string Title { get; set; }
+        
         [MaxLength(1024)]
+        [Display(Name ="照片描述")]
         public string Description { get; set; }
 
         public string Path_Origional { get; set; }

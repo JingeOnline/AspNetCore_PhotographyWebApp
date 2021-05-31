@@ -1,0 +1,55 @@
+﻿@model PhotographyWebAppCore.Models.Photo
+
+@{
+    ViewData["Title"] = "AddOnePhoto";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>AddOnePhoto</h1>
+
+<h4>Photo</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <form asp-action="AddOnePhoto" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="PhotoFile"></label>
+                <div class="custom-file">
+                    <input asp-for="PhotoFile" class="custom-file-input" id="customFile" />
+                    <label class="custom-file-label" for="customFile">上传文件</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CaptureDateTime" class="control-label"></label>
+                <input asp-for="CaptureDateTime" class="form-control" />
+                <span asp-validation-for="CaptureDateTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhotographerId" class="control-label"></label>
+                <input asp-for="PhotographerId" class="form-control" />
+                <span asp-validation-for="PhotographerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
