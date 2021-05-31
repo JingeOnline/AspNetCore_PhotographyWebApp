@@ -25,9 +25,8 @@ namespace PhotographyWebAppCore.Helpers
             string folder_middle = "images\\photos_middle";
             string folder_small = "images\\photos_small";
 
-            //string[] parts = photo.PhotoFile.Split('/');
-            //string fileName = parts[parts.Length - 1];
-            string fileName = photo.PhotoFile.FileName;
+            string[] parts = photo.Path_Origional.Split('\\');
+            string fileName = parts[parts.Length - 1];
             photo.Path_Big = Path.Combine(folder_big, fileName);
             photo.Path_Middle = Path.Combine(folder_middle, fileName);
             photo.Path_Small = Path.Combine(folder_small, fileName);
@@ -43,32 +42,33 @@ namespace PhotographyWebAppCore.Helpers
                 using (Image image = Image.Load(stream))
                 {
                     int longEdge = (image.Width > image.Height) ? image.Width : image.Height;
+                    int rawWidth = image.Width;
+                    int rawHeight = image.Height;
+
                     if (longEdge > 1920)
                     {
-                        double scale = longEdge / 1920;
-                        int width = (int)(image.Width / scale);
-                        int height = (int)(image.Height / scale);
+                        double scale = (double)longEdge / 1920;
+                        int width = (int)(rawWidth / scale);
+                        int height = (int)(rawHeight / scale);
                         image.Mutate(x => x.Resize(width, height));
                     }
                     image.Save(Path.Combine(_rootPath, folder_big, fileName));
 
                     if (longEdge > 960)
                     {
-                        double scale = longEdge / 960;
-                        int width = (int)(image.Width / scale);
-                        int height = (int)(image.Height / scale);
+                        double scale = (double)longEdge / 960;
+                        int width = (int)(rawWidth / scale);
+                        int height = (int)(rawHeight / scale);
                         image.Mutate(x => x.Resize(width, height));
-                        image.Save(Path.Combine(_rootPath, folder_middle, fileName));
                     }
-                    image.Save(Path.Combine(_rootPath, folder_big, fileName));
+                    image.Save(Path.Combine(_rootPath, folder_middle, fileName));
 
                     if (longEdge > 512)
                     {
-                        double scale = longEdge / 512;
-                        int width = (int)(image.Width / scale);
-                        int height = (int)(image.Height / scale);
+                        double scale = (double)longEdge / 512;
+                        int width = (int)(rawWidth / scale);
+                        int height = (int)(rawHeight / scale);
                         image.Mutate(x => x.Resize(width, height));
-                        image.Save(Path.Combine(_rootPath, folder_small, fileName));
                     }
                     image.Save(Path.Combine(_rootPath, folder_small, fileName));
                 }

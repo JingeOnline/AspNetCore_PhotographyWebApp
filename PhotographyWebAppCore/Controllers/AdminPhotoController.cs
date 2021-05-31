@@ -39,10 +39,13 @@ namespace PhotographyWebAppCore.Controllers
                 string[] pairs = photo.PhotoFile.FileName.Split('.');
                 string extension = pairs[pairs.Length - 1];
                 string uniqueFileName = Guid.NewGuid().ToString() + "." + extension;
-                string folder = "images/photos_origional";
+                string folder = "images\\photos_origional";
                 string rootPath = _webHostEnvironment.WebRootPath;
                 string filePath = Path.Combine(rootPath, folder, uniqueFileName);
-                await photo.PhotoFile.CopyToAsync(new FileStream(filePath, FileMode.Create));
+                using (FileStream stream=new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.PhotoFile.CopyToAsync(stream);
+                }
                 photo.Path_Origional = Path.Combine(folder, uniqueFileName);
 
                 //调整图片大小，并储存到对应的文件夹中
