@@ -28,7 +28,7 @@
                             内容管理
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="#">照片</a>
+                            <a class="dropdown-item" asp-controller="AdminPhoto" asp-action="Photo">照片</a>
                             <a class="dropdown-item" asp-controller="Admin" asp-action="Category">类型</a>
                             <a class="dropdown-item" href="#">摄影师</a>
                         </div>
@@ -54,5 +54,6 @@
     <script src="~/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bricklayer/bricklayer.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts",required:false)
 </body>
 </html>

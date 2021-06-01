@@ -26,6 +26,12 @@ namespace PhotographyWebAppCore.Controllers
             return View(photos);
         }
         [HttpGet]
+        public IActionResult AddPohotos()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public IActionResult AddOnePhoto()
         {
             return View();
@@ -59,6 +65,20 @@ namespace PhotographyWebAppCore.Controllers
                 return View();
             }
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteOneById(int id)
+        {
+            //删除本地文件夹内的照片文件
+            Photo photo =await _photoRepository.GetById(id);
+            string rootFolder = _webHostEnvironment.WebRootPath;
+            System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Origional));
+            System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Big));
+            System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Middle));
+            System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Small));
+            //去数据库中删除文件记录
+            await _photoRepository.DeleteById(id);
+            return RedirectToAction(nameof(Photo));
         }
         //public async Task<IActionResult> AddPhotos(List<Photo> photos)
         //{

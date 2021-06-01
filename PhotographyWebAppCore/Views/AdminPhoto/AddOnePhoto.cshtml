@@ -5,9 +5,9 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>AddOnePhoto</h1>
+<h1>照片</h1>
 
-<h4>Photo</h4>
+<h4>当前所有照片</h4>
 <hr />
 <div class="row">
     <div class="col-md-10 mx-auto">
@@ -43,13 +43,21 @@
                 <span asp-validation-for="PhotographerId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="创建" class="btn btn-primary" />
+                <a asp-action="Photo" class="btn btn-danger">取消</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next(".custom-file-label").html(fileName);
+            });
+        });
+    </script>
+}
