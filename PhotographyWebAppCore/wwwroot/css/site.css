@@ -27,6 +27,10 @@ nav.navbar .nav-item {
     object-fit: contain;
 }
 
+.h4-inline{
+    display:inline;
+}
+
 
 /*.admin-photo-card{
     padding:0px;

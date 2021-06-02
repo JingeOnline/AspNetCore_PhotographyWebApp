@@ -1,0 +1,46 @@
+﻿@using PhotographyWebAppCore.Models
+@model List<Photo>
+
+<h1>照片</h1>
+
+<h4>编辑上传的照片</h4>
+<hr />
+<form method="post" asp-action="EditAfterUpload_Post">
+    @if (Model != null && Model.Count() > 0)
+    {
+
+    <div class="row">
+        @for(int i=0;i<Model.Count;i++)
+        {
+
+            <div class="col-lg-4 mb-3">
+                <div class="card">
+                    <img class="card-img-top" src="/@Model[i].Path_Middle" alt="Card image cap">
+                    <div class="card-footer">
+                        <input asp-for="@Model[i].Id" hidden />
+                        <div class="form-group row">
+                            <label asp-for="@Model[i].Title" class="col-form-label col-3"></label>
+                            <input asp-for="@Model[i].Title" class="form-control col-9" />
+                            <span asp-validation-for="@Model[i].Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="@Model[i].Description" class="col-form-label col-3"></label>
+                            <textarea asp-for="@Model[i].Description" class="form-control col-9"></textarea>
+                            <span asp-validation-for="@Model[i].Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    }
+    <div class="text-center mb-5">
+        @*<a asp-action="AddOnePhoto" class="btn btn-primary text-center">+ 添加新照片（单张）</a>*@
+        @*<a asp-action="AddPhotos" class="btn btn-primary text-center">+ 添加新照片（多张）</a>*@
+        <div class="form-group">
+            <input type="submit" value="保存" class="btn btn-primary" />
+            <a asp-action="Category" class="btn btn-danger">取消</a>
+        </div>
+    </div>
+</form>

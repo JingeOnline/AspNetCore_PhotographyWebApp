@@ -11,5 +11,7 @@ namespace PhotographyWebAppCore.Repositories
         Task<List<Photo>> GetAll();
         Task<Photo> GetById(int id);
         Task<Photo> UpdateOne(Photo photo);
+        Task<List<Photo>> CreateMultiple(List<Photo> photos);
+        Task UpdateMultiple(List<Photo> photos);
     }
 }

@@ -8,6 +8,7 @@ using PhotographyWebAppCore.Models;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using PhotographyWebAppCore.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace PhotographyWebAppCore.Controllers
 {
@@ -26,11 +27,34 @@ namespace PhotographyWebAppCore.Controllers
             return View(photos);
         }
         [HttpGet]
-        public IActionResult AddPohotos()
+        public IActionResult AddPhotos()
         {
             return View();
         }
-
+        [HttpPost]
+        public async Task<IActionResult> AddPhotos(List<IFormFile> files)
+        {
+            if(ModelState.IsValid && files.Count > 0)
+            {
+                List<Photo> photos = new List<Photo>();
+                foreach(IFormFile file in files)
+                {
+                    Photo photo = new Photo
+                    {
+                        PhotoFile = file,
+                    };
+                    photos.Add(photo);
+                    await SavePhoto(photo);
+                    photo.ResizeImageAndSaveCopies();
+                }
+                await _photoRepository.CreateMultiple(photos);
+                return View(nameof(EditAfterUpload),photos);
+            }
+            else
+            {
+                return View();
+            }
+        }
         [HttpGet]
         public IActionResult AddOnePhoto()
         {
@@ -42,18 +66,7 @@ namespace PhotographyWebAppCore.Controllers
             if (ModelState.IsValid && photo.PhotoFile != null)
             {
                 //把照片储存到本地文件夹
-                string[] pairs = photo.PhotoFile.FileName.Split('.');
-                string extension = pairs[pairs.Length - 1];
-                string uniqueFileName = Guid.NewGuid().ToString() + "." + extension;
-                string folder = "images\\photos_origional";
-                string rootPath = _webHostEnvironment.WebRootPath;
-                string filePath = Path.Combine(rootPath, folder, uniqueFileName);
-                using (FileStream stream=new FileStream(filePath, FileMode.Create))
-                {
-                    await photo.PhotoFile.CopyToAsync(stream);
-                }
-                photo.Path_Origional = Path.Combine(folder, uniqueFileName);
-
+                await SavePhoto(photo);
                 //调整图片大小，并储存到对应的文件夹中
                 photo.ResizeImageAndSaveCopies();
                 //提交到数据库
@@ -80,9 +93,33 @@ namespace PhotographyWebAppCore.Controllers
             await _photoRepository.DeleteById(id);
             return RedirectToAction(nameof(Photo));
         }
-        //public async Task<IActionResult> AddPhotos(List<Photo> photos)
-        //{
+        
+        //把照片储存到本地文件夹
+        private async Task SavePhoto(Photo photo)
+        {
+            string[] pairs = photo.PhotoFile.FileName.Split('.');
+            string extension = pairs[pairs.Length - 1];
+            string uniqueFileName = Guid.NewGuid().ToString() + "." + extension;
+            string folder = "images\\photos_origional";
+            string rootPath = _webHostEnvironment.WebRootPath;
+            string filePath = Path.Combine(rootPath, folder, uniqueFileName);
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            {
+                await photo.PhotoFile.CopyToAsync(stream);
+            }
+            photo.Path_Origional = Path.Combine(folder, uniqueFileName);
+        }
 
-        //}
+        [HttpGet]
+        public IActionResult EditAfterUpload(List<Photo> photos)
+        {
+            return View(photos);
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditAfterUpload_Post(List<Photo> photos)
+        {
+            await _photoRepository.UpdateMultiple(photos);
+            return RedirectToAction(nameof(Photo));
+        }
     }
 }

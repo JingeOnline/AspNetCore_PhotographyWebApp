@@ -63,6 +63,19 @@ namespace PhotographyWebAppCore.Repositories
             return p;
         }
 
+        public async Task UpdateMultiple(List<Photo> photos)
+        {
+            foreach(Photo photo in photos)
+            {
+                Photo p = await _context.Photo.FindAsync(photo.Id);
+                p.Title = photo.Title;
+                p.Description = photo.Description;
+                p.Photographer = photo.Photographer;
+                p.LastUpdateDateTime = DateTime.UtcNow;
+                _context.SaveChanges();
+            }
+        }
+
         public async Task DeleteById(int id)
         {
             Photo photo = await _context.Photo.FindAsync(id);

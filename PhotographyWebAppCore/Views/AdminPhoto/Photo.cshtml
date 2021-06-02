@@ -5,8 +5,13 @@
 @model List<Photo>
 <h1>照片</h1>
 
-<h4>当前所有照片</h4>
+<h4 class="float-left mt-1">当前所有照片</h4>
+<div class="text-right pt-0">
+    <a asp-action="AddOnePhoto" class="btn btn-primary">+ 添加新照片（单张）</a>
+    <a asp-action="AddPhotos" class="btn btn-primary">+ 添加新照片（多张）</a>
+</div>
 <hr />
+
 @if (Model != null && Model.Count() > 0)
 {
     <div class="row">
@@ -29,6 +34,3 @@
     </div>
 }
 
-<div class="text-center mb-5">
-    <a asp-action="AddOnePhoto" class="btn btn-primary text-center">+ 添加新照片</a>
-</div>
