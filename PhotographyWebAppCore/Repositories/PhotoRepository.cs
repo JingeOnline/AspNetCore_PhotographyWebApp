@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PhotographyWebAppCore.Helpers;
+using System.IO;
 
 namespace PhotographyWebAppCore.Repositories
 {
@@ -18,7 +19,10 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<List<Photo>> GetAll()
         {
-            return await _context.Photo.ToListAsync();
+            List<Photo> photos= await _context.Photo
+                .Include(x => x.Album)
+                .ToListAsync();
+            return photos;
         }
 
         public async Task<Photo> GetById(int id)
@@ -30,7 +34,8 @@ namespace PhotographyWebAppCore.Repositories
         {
             if (photo.Title == null)
             {
-                photo.Title = photo.PhotoFile.FileName;
+                //string fileName = Path.GetFileNameWithoutExtension(photo.PhotoFile.FileName);
+                photo.Title = Path.GetFileNameWithoutExtension(photo.PhotoFile.FileName);
             }
             photo.UploadDateTime = DateTime.UtcNow;
             photo.LastUpdateDateTime = DateTime.UtcNow;
@@ -43,7 +48,7 @@ namespace PhotographyWebAppCore.Repositories
         {
             foreach(Photo photo in photos)
             {
-                photo.Title = photo.PhotoFile.FileName;
+                photo.Title = Path.GetFileNameWithoutExtension(photo.PhotoFile.FileName);
                 photo.UploadDateTime = DateTime.UtcNow;
                 photo.LastUpdateDateTime = DateTime.UtcNow;
             }

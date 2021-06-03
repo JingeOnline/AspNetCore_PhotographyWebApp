@@ -28,6 +28,13 @@
                             <textarea asp-for="@Model[i].Description" class="form-control col-9"></textarea>
                             <span asp-validation-for="@Model[i].Description" class="text-danger"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="@Model[i].AlbumId" class="control-label"></label>
+                            <select asp-for="@Model[i].AlbumId" class="form-control" asp-items="@ViewBag.Albums" required>
+                                <option value="">请选择相册</option>
+                            </select>
+                            <span asp-validation-for="@Model[i].AlbumId" class="text-danger"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -40,7 +47,7 @@
         @*<a asp-action="AddPhotos" class="btn btn-primary text-center">+ 添加新照片（多张）</a>*@
         <div class="form-group">
             <input type="submit" value="保存" class="btn btn-primary" />
-            <a asp-action="Category" class="btn btn-danger">取消</a>
+            <a asp-action="Index" class="btn btn-danger">取消</a>
         </div>
     </div>
 </form>

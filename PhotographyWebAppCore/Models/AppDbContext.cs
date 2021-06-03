@@ -27,6 +27,11 @@ namespace PhotographyWebAppCore.Models
             modelBuilder.Entity<Photo>()
                 .Property(x => x.LastUpdateDateTime)
                 .HasDefaultValueSql("GETUTCDATE()");
+
+
+            //modelBuilder.Entity<Album>()
+            //    .HasOne(x=>x.CoverPhoto)
+            //    .HasForeignKey(y=>y)
             //modelBuilder.Entity<Photo>()
             //    .HasOne(x => x.Photographer)
             //    .WithMany(y => y.Photos);

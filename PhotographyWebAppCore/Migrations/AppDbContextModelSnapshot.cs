@@ -228,6 +228,9 @@ namespace PhotographyWebAppCore.Migrations
                     b.Property<int?>("CoverPhotoId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(1024)")
@@ -418,7 +421,7 @@ namespace PhotographyWebAppCore.Migrations
 
             modelBuilder.Entity("PhotographyWebAppCore.Models.Photo", b =>
                 {
-                    b.HasOne("PhotographyWebAppCore.Models.Album", null)
+                    b.HasOne("PhotographyWebAppCore.Models.Album", "Album")
                         .WithMany("Photos")
                         .HasForeignKey("AlbumId");
 

@@ -34,6 +34,10 @@ namespace PhotographyWebAppCore.Models
         public Photographer Photographer { get; set; }
         public int? PhotographerId { get; set; }
 
+        [Display(Name ="所在相册")]
+        public Album Album { get; set; }
+        public int? AlbumId { get; set; }
+
         [NotMapped]
         [Required]
         [Display(Name ="图片文件")]

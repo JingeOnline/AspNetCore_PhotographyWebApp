@@ -3,7 +3,10 @@
 
 <h1>类型</h1>
 
-<h4>当前所有类型</h4>
+<h4 class="float-left mt-1">当前所有类型</h4>
+<div class="text-right pt-0">
+    <a asp-action="CreateCategory" class="btn btn-primary text-center">+ 创建新类型</a>
+</div>
 <hr />
 @if (Model != null && Model.Count() > 0)
 {
@@ -34,6 +37,3 @@
     }
 }
 
-<div class="text-center mb-5">
-    <a asp-action="CreateCategory" class="btn btn-primary text-center">+ 创建新类型</a>
-</div>

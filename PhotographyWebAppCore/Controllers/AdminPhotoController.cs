@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using PhotographyWebAppCore.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace PhotographyWebAppCore.Controllers
 {
@@ -16,12 +18,16 @@ namespace PhotographyWebAppCore.Controllers
     {
         private readonly IPhotoRepository _photoRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public AdminPhotoController(IPhotoRepository photoRepository, IWebHostEnvironment webHostEnvironment)
+        private readonly IAlbumRepository _albumRepository;
+        public AdminPhotoController(IPhotoRepository photoRepository, 
+            IWebHostEnvironment webHostEnvironment,
+            IAlbumRepository albumRepository)
         {
             _photoRepository = photoRepository;
             _webHostEnvironment = webHostEnvironment;
+            _albumRepository = albumRepository;
         }
-        public async Task<IActionResult> Photo()
+        public async Task<IActionResult> Index()
         {
             List<Photo> photos = await _photoRepository.GetAll();
             return View(photos);
@@ -47,8 +53,10 @@ namespace PhotographyWebAppCore.Controllers
                     await SavePhoto(photo);
                     photo.ResizeImageAndSaveCopies();
                 }
-                await _photoRepository.CreateMultiple(photos);
-                return View(nameof(EditAfterUpload),photos);
+                List<Photo> ps=await _photoRepository.CreateMultiple(photos);
+                List<int> ids= ps.Select(x => x.Id).ToList();
+                TempData["UploadedPhotoIds"] = ids;
+                return RedirectToAction(nameof(EditAfterUpload));
             }
             else
             {
@@ -91,7 +99,7 @@ namespace PhotographyWebAppCore.Controllers
             System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Small));
             //去数据库中删除文件记录
             await _photoRepository.DeleteById(id);
-            return RedirectToAction(nameof(Photo));
+            return RedirectToAction(nameof(Index));
         }
         
         //把照片储存到本地文件夹
@@ -111,15 +119,20 @@ namespace PhotographyWebAppCore.Controllers
         }
 
         [HttpGet]
-        public IActionResult EditAfterUpload(List<Photo> photos)
+        public async Task<IActionResult> EditAfterUpload()
         {
+            List<int> ids = TempData["UploadedPhotoIds"] as List<int>;
+            List<Photo> photos = await _photoRepository.GetAll();
+            List<Album> albums = await _albumRepository.GetAll();
+            ViewBag.Albums = new SelectList(albums, "Id", "Title");
             return View(photos);
         }
         [HttpPost]
         public async Task<IActionResult> EditAfterUpload_Post(List<Photo> photos)
         {
             await _photoRepository.UpdateMultiple(photos);
-            return RedirectToAction(nameof(Photo));
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
