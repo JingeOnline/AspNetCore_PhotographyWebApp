@@ -1,0 +1,39 @@
+﻿@using PhotographyWebAppCore.Models
+@model List<PhotoCategory>
+
+<h1>类型</h1>
+
+<h4 class="float-left mt-1">当前所有类型</h4>
+<div class="text-right pt-0">
+    <a asp-action="CreateOne" class="btn btn-primary text-center">+ 创建新类型</a>
+</div>
+<hr />
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (PhotoCategory category in Model)
+    {
+        <div class="col-md-10 mx-auto">
+            <div class="card text-center my-5">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <form method="get">
+                                <button class="btn btn-outline-primary" name="id" value="@category.Id" asp-action="UpdateById">编辑</button>
+                            </form>
+                        </li>
+                        <li class="nav-item mx-3">
+                            <form method="post">
+                                <button class="btn btn-outline-danger" name="id" value="@category.Id" asp-action="DeleteById">删除</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@category.Name</h5>
+                    <p class="card-text text-left">@category.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+}
+

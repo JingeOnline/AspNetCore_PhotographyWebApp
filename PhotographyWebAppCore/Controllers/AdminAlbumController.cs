@@ -26,13 +26,16 @@ namespace PhotographyWebAppCore.Controllers
             return View(albums);
         }
         [HttpGet]
-        public async Task<IActionResult> CreateOne()
+        public async Task<IActionResult> CreateOne(string albumName=null, bool isSuccess=false, int? albumId=null)
         {
             //ViewBag.IsSuccess = isSuccess;
             List<PhotoCategory> categories = await _categoryRepository.GetAll();
             //下拉选择菜单
             //第一个参数是要传入的列表，第二个参数是作为value提交的字段，第三个参数是作为text显示的字段。
             ViewBag.Categories = new SelectList(categories,"Id","Name");
+            ViewBag.IsSuccess = isSuccess;
+            ViewBag.AlbumName = albumName;
+            ViewBag.AlbumId = albumId;
             return View();
         }
         [HttpPost]
@@ -41,12 +44,24 @@ namespace PhotographyWebAppCore.Controllers
             if (ModelState.IsValid)
             {
                 Album a = await _albumRepository.CreateOne(album);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(CreateOne),new { isSuccess=true,albumName=a.Title,albumId=a.Id});
             }
             else
             {
                 return View();
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteById(int id)
+        {
+            await _albumRepository.DeleteById_LeavePhotos(id);
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteByIdAndPhotos(int id)
+        {
+            await _albumRepository.DeleteById_DeletePhotos(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

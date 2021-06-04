@@ -1,5 +1,5 @@
-﻿@*@using PhotographyWebAppCore.Models;
-@model List<Photo>*@
+﻿@using PhotographyWebAppCore.ViewModels;
+@model PhotoUploadViewModel
 @{
     ViewData["Title"] = "AddPhotos";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -15,9 +15,17 @@
             <div class="form-group">
                 <label>选择文件</label>
                 <div class="custom-file">
-                    <input name="files" class="custom-file-input" id="customFile" type="file" multiple />
+                    @*<input name="files" class="custom-file-input" id="customFile" type="file" multiple />*@
+                    <input asp-for="@Model.Files" class="custom-file-input" id="customFile" type="file" multiple />
                     <label class="custom-file-label" for="customFile">上传文件</label>
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">指定相册</label>
+                <select asp-for="@Model.AlbumId" class="form-control" asp-items="@ViewBag.Albums">
+                    <option value="">---暂不指定---</option>
+                </select>
+                <span asp-validation-for="@Model.AlbumId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="上传" class="btn btn-primary" />

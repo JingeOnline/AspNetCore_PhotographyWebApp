@@ -16,23 +16,39 @@
             <div class="card text-center my-5">
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item">
+                        <li class="nav-item mx-1">
                             <form method="get">
                                 <button class="btn btn-outline-primary btn-sm" name="id" value="@album.Id" asp-action="UpdateCategory">编辑</button>
                             </form>
                         </li>
-                        <li class="nav-item mx-3">
+                        <li class="nav-item mx-1">
                             <form method="post">
-                                <button class="btn btn-outline-danger btn-sm" name="id" value="@album.Id" asp-action="DeleteCategory">删除</button>
+                                <button class="btn btn-outline-danger btn-sm" name="id" value="@album.Id" asp-action="DeleteById">删除相册</button>
+                            </form>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <form method="post">
+                                <button class="btn btn-outline-danger btn-sm" name="id" value="@album.Id" asp-action="DeleteByIdAndPhotos">删除相册和照片</button>
                             </form>
                         </li>
                     </ul>
                 </div>
                 <div class="card-body row">
-                    <div class="col-3 d-flex align-items-center justify-content-center">
-                        <img src="/@album.CoverPhoto.Path_Small" class="img-fluid"/>
+                    <div class="col-sm-3 d-flex align-items-center justify-content-center mb-sm-0 mb-3">
+                        @{ 
+                            string coverPhotoPath;
+                            if (album.CoverPhoto == null)
+                            {
+                                coverPhotoPath = "/images/image-placeholder.jpg";
+                            }
+                            else
+                            {
+                                coverPhotoPath = "/" + album.CoverPhoto.Path_Small;
+                            }
+                        }
+                        <img src="@coverPhotoPath" class="img-fluid"/>
                     </div>
-                    <div class="col-9">
+                    <div class="col-sm-9">
                         <h5 class="card-title">@album.Title</h5>
                         <p class="card-text text-left">@album.Description</p>
                         <p class="card-text text-left my-0"><small class="text-muted">类型：@album.Category.Name</small></p>
@@ -50,10 +66,10 @@
                 {
                     <div class="card-footer">
 
-                        <div class="row">
+                        <div class="row flex-row flex-nowrap overflow-auto">
                             @foreach (Photo photo in album.Photos)
                             {
-                                <div class="col-md-2">
+                                <div class="col-2 px-1">
                                     <img src="/@photo.Path_Small" class="img-thumbnail" />
                                 </div>
                             }

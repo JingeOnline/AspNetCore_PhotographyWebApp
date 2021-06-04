@@ -11,6 +11,7 @@ using PhotographyWebAppCore.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using PhotographyWebAppCore.ViewModels;
 
 namespace PhotographyWebAppCore.Controllers
 {
@@ -19,7 +20,7 @@ namespace PhotographyWebAppCore.Controllers
         private readonly IPhotoRepository _photoRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IAlbumRepository _albumRepository;
-        public AdminPhotoController(IPhotoRepository photoRepository, 
+        public AdminPhotoController(IPhotoRepository photoRepository,
             IWebHostEnvironment webHostEnvironment,
             IAlbumRepository albumRepository)
         {
@@ -33,30 +34,46 @@ namespace PhotographyWebAppCore.Controllers
             return View(photos);
         }
         [HttpGet]
-        public IActionResult AddPhotos()
+        public async Task<IActionResult> AddPhotos(int? albumId=null)
         {
+            List<Album> albums = await _albumRepository.GetAll();
+
+            Album selectedAlbum=null;
+            if (albumId != null)
+            {
+                selectedAlbum = albums.FirstOrDefault(x=>x.Id==albumId);
+            }
+
+            ViewBag.Albums = new SelectList(albums, "Id", "Title", selectedAlbum);
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddPhotos(List<IFormFile> files)
+        public async Task<IActionResult> AddPhotos(PhotoUploadViewModel viewModel)
         {
-            if(ModelState.IsValid && files.Count > 0)
+            List<IFormFile> files = viewModel.Files;
+            //int albumId = viewModel.AlbumId;
+
+            if (ModelState.IsValid && files.Count > 0)
             {
                 List<Photo> photos = new List<Photo>();
-                foreach(IFormFile file in files)
+                foreach (IFormFile file in files)
                 {
                     Photo photo = new Photo
                     {
                         PhotoFile = file,
                     };
+                    if (viewModel.AlbumId != null)
+                    {
+                        photo.AlbumId = viewModel.AlbumId;
+                    }
                     photos.Add(photo);
                     await SavePhoto(photo);
                     photo.ResizeImageAndSaveCopies();
                 }
-                List<Photo> ps=await _photoRepository.CreateMultiple(photos);
-                List<int> ids= ps.Select(x => x.Id).ToList();
-                TempData["UploadedPhotoIds"] = ids;
-                return RedirectToAction(nameof(EditAfterUpload));
+                List<Photo> ps = await _photoRepository.CreateMultiple(photos);
+                List<int> ids = ps.Select(x => x.Id).ToList();
+                //TempData["UploadedPhotoIds"] = ids;
+                return RedirectToAction(nameof(EditAfterUpload), new { ids });
             }
             else
             {
@@ -91,7 +108,7 @@ namespace PhotographyWebAppCore.Controllers
         public async Task<IActionResult> DeleteOneById(int id)
         {
             //删除本地文件夹内的照片文件
-            Photo photo =await _photoRepository.GetById(id);
+            Photo photo = await _photoRepository.GetById(id);
             string rootFolder = _webHostEnvironment.WebRootPath;
             System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Origional));
             System.IO.File.Delete(Path.Combine(rootFolder, photo.Path_Big));
@@ -101,7 +118,7 @@ namespace PhotographyWebAppCore.Controllers
             await _photoRepository.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
-        
+
         //把照片储存到本地文件夹
         private async Task SavePhoto(Photo photo)
         {
@@ -119,10 +136,12 @@ namespace PhotographyWebAppCore.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditAfterUpload()
+        public async Task<IActionResult> EditAfterUpload(List<int> ids)
         {
-            List<int> ids = TempData["UploadedPhotoIds"] as List<int>;
-            List<Photo> photos = await _photoRepository.GetAll();
+            //List<int> ids = TempData["UploadedPhotoIds"];
+            List<Photo> allPhotos = await _photoRepository.GetAll();
+            List<Photo> photos = allPhotos.Where(x => ids.Contains(x.Id)).ToList();
+
             List<Album> albums = await _albumRepository.GetAll();
             ViewBag.Albums = new SelectList(albums, "Id", "Title");
             return View(photos);

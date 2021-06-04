@@ -11,6 +11,14 @@
 <hr />
 <div class="row">
     <div class="col-md-10 mx-auto">
+        @if (ViewBag.IsSuccess == true)
+        {
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">创建成功！</h4>
+                <p><a class="btn btn-success mr-1" asp-controller="AdminPhoto" asp-action="AddPhotos" asp-route-albumId="@ViewBag.AlbumId">上传照片</a>向 <b>@ViewBag.AlbumName</b> 相册中上传照片</p>
+                <p>您也可以继续创建新相册或 <a asp-action="Index">点击此处</a> 返回相册列表。</p>
+            </div>
+        }
         <form asp-action="CreateOne">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

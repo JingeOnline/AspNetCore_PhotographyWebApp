@@ -1,0 +1,41 @@
+﻿@model PhotographyWebAppCore.Models.PhotoCategory
+
+@{
+    ViewData["Title"] = "CreateCategory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>类型</h1>
+
+<h4>创建新类型</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        @if (ViewBag.IsSuccess == true)
+        {
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">创建成功！</h4>
+                <p>您可以继续创建新类型或<a asp-action="Index">点击此处</a> 返回类型列表</p>
+            </div>
+        }
+        <form asp-action="CreateOne">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="创建" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -11,12 +11,10 @@ namespace PhotographyWebAppCore.Controllers
     public class AdminController : Controller
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly ICategoryRepository _categoryRepository;
-
-        public AdminController(IAccountRepository accountRepository,ICategoryRepository categoryRepository)
+   
+        public AdminController(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
-            _categoryRepository = categoryRepository;
         }
         [HttpGet]
         public IActionResult Login()
@@ -48,50 +46,6 @@ namespace PhotographyWebAppCore.Controllers
         {
             return View();
         }
-        [HttpGet]
-        public async Task<IActionResult> Category()
-        {
-            List<PhotoCategory> photoCategories = await _categoryRepository.GetAll();
-            return View(photoCategories);
-        }
-        [HttpGet]
-        public IActionResult CreateCategory()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> CreateCategory(PhotoCategory photoCategory)
-        {
-            if (ModelState.IsValid)
-            {
-                PhotoCategory newCategory = await _categoryRepository.CreateOne(photoCategory);
-                if (newCategory != null)
-                {
-                    return RedirectToAction(nameof(Category));
-                }
-            }
-            ModelState.AddModelError("", "创建失败，内容不符合规范，请重新输入。");
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> DeleteCategory(int id)
-        {
-            await _categoryRepository.DeleteById(id);
-            return RedirectToAction(nameof(Category));
-            //return Content(id.ToString());
-        }
-        [HttpGet]
-        public async Task<IActionResult> UpdateCategory(int id,bool isSuccess=false)
-        {
-            PhotoCategory photoCategory = await _categoryRepository.GetById(id);
-            ViewBag.IsSuccess = isSuccess;
-            return View(photoCategory);
-        }
-        [HttpPost]
-        public async Task<IActionResult> UpdateCategory(PhotoCategory photoCategory)
-        {
-            PhotoCategory category = await _categoryRepository.UpdateOne(photoCategory);
-            return RedirectToAction(nameof(UpdateCategory), new { isSuccess = true, id = category.Id });
-        }
+        
     }
 }

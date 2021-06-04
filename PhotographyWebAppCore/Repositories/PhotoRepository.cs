@@ -76,6 +76,7 @@ namespace PhotographyWebAppCore.Repositories
                 p.Title = photo.Title;
                 p.Description = photo.Description;
                 p.Photographer = photo.Photographer;
+                p.AlbumId = photo.AlbumId;
                 p.LastUpdateDateTime = DateTime.UtcNow;
                 _context.SaveChanges();
             }

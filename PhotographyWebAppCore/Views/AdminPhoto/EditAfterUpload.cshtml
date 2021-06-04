@@ -13,7 +13,7 @@
         @for(int i=0;i<Model.Count;i++)
         {
 
-            <div class="col-lg-4 mb-3">
+            <div class="col-lg-3 mb-3">
                 <div class="card">
                     <img class="card-img-top" src="/@Model[i].Path_Middle" alt="Card image cap">
                     <div class="card-footer">
@@ -29,11 +29,11 @@
                             <span asp-validation-for="@Model[i].Description" class="text-danger"></span>
                         </div>
                         <div class="form-group">
-                            <label asp-for="@Model[i].AlbumId" class="control-label"></label>
+                            <label asp-for="@Model[i].Album" class="control-label"></label>
                             <select asp-for="@Model[i].AlbumId" class="form-control" asp-items="@ViewBag.Albums" required>
                                 <option value="">请选择相册</option>
                             </select>
-                            <span asp-validation-for="@Model[i].AlbumId" class="text-danger"></span>
+                            <span asp-validation-for="@Model[i].Album" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
