@@ -63,5 +63,21 @@ namespace PhotographyWebAppCore.Controllers
             await _albumRepository.DeleteById_DeletePhotos(id);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(int id)
+        {
+            Album album =await _albumRepository.GetById(id);
+            PhotoCategory category = album.Category;
+            List<PhotoCategory> categories = await _categoryRepository.GetAll();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name",category);
+            return View(album);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(Album album)
+        {
+            await _albumRepository.UpdateOne(album);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -27,7 +27,7 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<Album> GetById(int id)
         {
-            Album album = await _context.Album.FindAsync(id);
+            Album album = await _context.Album.Include(x => x.Photos).FirstOrDefaultAsync(x => x.Id == id);
             return album;
         }
 

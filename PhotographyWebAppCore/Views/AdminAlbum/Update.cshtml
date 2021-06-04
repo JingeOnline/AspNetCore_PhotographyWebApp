@@ -1,0 +1,67 @@
+﻿@model PhotographyWebAppCore.Models.Album
+
+@{
+    ViewData["Title"] = "CreateOne";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>相册</h1>
+
+<h4>更新相册</h4>
+<hr />
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        @*@if (ViewBag.IsSuccess == true)
+            {
+                <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">创建成功！</h4>
+                    <p><a class="btn btn-success mr-1" asp-controller="AdminPhoto" asp-action="AddPhotos" asp-route-albumId="@ViewBag.AlbumId">上传照片</a>向 <b>@ViewBag.AlbumName</b> 相册中上传照片</p>
+                    <p>您也可以继续创建新相册或 <a asp-action="Index">点击此处</a> 返回相册列表。</p>
+                </div>
+            }*@
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoverPhotoId" class="control-label"></label>
+                <div class="row flex-row flex-nowrap overflow-auto mx-1">
+                    @foreach (Photo photo in Model.Photos)
+                    {
+                        @*<div class="col-2 px-1 position-relative select-image">
+                            <input type="radio" class="position-absolute radio" value="@photo.Id" asp-for="CoverPhotoId" />
+                            <img src="/@photo.Path_Small" class="img-thumbnail" />
+                        </div>*@
+                    <label class="col-2 px-1 position-relative select-image">
+                        <div class="custom-control custom-radio position-absolute">
+                            <input type="radio" class="position-absolute custom-control-input" value="@photo.Id" asp-for="CoverPhotoId" id="dum" />
+                            <label class="custom-control-label" for="dum"></label>
+                        </div>
+                        <img src="/@photo.Path_Small" class="img-thumbnail" />
+                    </label>
+                    }
+                </div>
+                <span asp-validation-for="CoverPhotoId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.Categories" required>
+                    <option value="">请选择类型</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="保存" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-danger">取消</a>
+            </div>
+        </form>
+    </div>
+</div>

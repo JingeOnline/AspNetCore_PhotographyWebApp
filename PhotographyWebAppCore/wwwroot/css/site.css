@@ -27,36 +27,35 @@ nav.navbar .nav-item {
     object-fit: contain;
 }
 
-.h4-inline{
-    display:inline;
+.h4-inline {
+    display: inline;
+}
+
+.light {
+    --primary: hsl(250, 100%, 44%);
+    --other: hsl(0, 0%, 14%);
+    background: hsl(0, 0%, 98%);
+}
+
+.dark {
+    --primary: hsl(1, 100%, 68%);
+    --other: hsl(0, 0%, 90%);
+    background: hsl(0, 0%, 10%);
 }
 
 
-/*.admin-photo-card{
-    padding:0px;
-    margin:0px;
+/* h1 */
+h1 {
+    color: var(--other);
+    padding: 8px 4px;
+    border-bottom: 2px solid var(--other);
 }
 
-.admin-photos-image {
-    width: 320px;
-    height: 320px;
-    object-fit: contain;
-}*/
+label.select-image{
+    cursor:pointer;
+}
 
-/*@media (max-width:768px) {
-
-    .admin-photo-card {
-        margin:0;
-    }
-
-    .admin-photos-image {
-        width: 100%;
-        height:auto;*/
-        /*height: 100%;*/
-        /*object-fit: contain;
-        vertical-align:central;
-        margin-left:auto;
-        margin-right:auto;
-        text-align:center;
-    }
-}*/
+div.custom-radio{
+    top:4%;
+    left:10%;
+}

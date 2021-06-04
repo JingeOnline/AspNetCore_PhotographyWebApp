@@ -17,9 +17,10 @@
                 <div class="card-header">
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item mx-1">
-                            <form method="get">
-                                <button class="btn btn-outline-primary btn-sm" name="id" value="@album.Id" asp-action="UpdateCategory">编辑</button>
-                            </form>
+                            <a class="btn btn-outline-primary btn-sm" asp-action="Update" asp-route-id="@album.Id">编辑</a>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <a class="btn btn-outline-primary btn-sm" asp-controller="AdminPhoto" asp-action="AddPhotos" asp-route-albumId="@album.Id">上传照片</a>
                         </li>
                         <li class="nav-item mx-1">
                             <form method="post">
@@ -35,7 +36,7 @@
                 </div>
                 <div class="card-body row">
                     <div class="col-sm-3 d-flex align-items-center justify-content-center mb-sm-0 mb-3">
-                        @{ 
+                        @{
                             string coverPhotoPath;
                             if (album.CoverPhoto == null)
                             {
@@ -46,7 +47,7 @@
                                 coverPhotoPath = "/" + album.CoverPhoto.Path_Small;
                             }
                         }
-                        <img src="@coverPhotoPath" class="img-fluid"/>
+                        <img src="@coverPhotoPath" class="img-fluid" />
                     </div>
                     <div class="col-sm-9">
                         <h5 class="card-title">@album.Title</h5>
