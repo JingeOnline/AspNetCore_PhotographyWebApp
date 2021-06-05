@@ -1,0 +1,49 @@
+﻿@using PhotographyWebAppCore.Models
+@model Photo
+
+<h1>照片</h1>
+<h4>编辑照片</h4>
+<hr />
+@if (ViewBag.IsSuccess == true)
+    {
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">修改成功！</h4>
+            <p><a asp-action="Index">点击此处</a> 返回照片列表。</p>
+        </div>
+    }
+<form method="post" asp-action="Update">
+    <div class="row">
+        <div class="col-lg-10 mx-auto mb-3">
+            <div class="card">
+                <img class="card-img-top" src="/@Model.Path_Big" alt="Card image cap">
+                <div class="card-footer">
+                    <input asp-for="@Model.Id" hidden />
+                    <div class="form-group row">
+                        <label asp-for="@Model.Title" class="col-form-label col-3"></label>
+                        <input asp-for="@Model.Title" class="form-control col-9" />
+                        <span asp-validation-for="@Model.Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.Description" class="col-form-label col-3"></label>
+                        <textarea asp-for="@Model.Description" class="form-control col-9"></textarea>
+                        <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.Album" class="control-label col-3"></label>
+                        <select asp-for="@Model.AlbumId" class="form-control col-9" asp-items="@ViewBag.Albums" required>
+                            <option value="">请选择相册</option>
+                        </select>
+                        <span asp-validation-for="@Model.Album" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <div class="form-group">
+            <input type="submit" value="保存" class="btn btn-primary" />
+            <a asp-action="Index" class="btn btn-danger">取消</a>
+        </div>
+    </div>
+</form>

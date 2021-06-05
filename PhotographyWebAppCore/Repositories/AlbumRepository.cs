@@ -22,6 +22,7 @@ namespace PhotographyWebAppCore.Repositories
             return await _context.Album
                 .Include(x=>x.Category)
                 .Include(x=>x.Photos)
+                .OrderByDescending(x=>x.Id)
                 .ToListAsync();
         }
 

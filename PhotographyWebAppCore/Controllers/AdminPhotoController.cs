@@ -28,20 +28,82 @@ namespace PhotographyWebAppCore.Controllers
             _webHostEnvironment = webHostEnvironment;
             _albumRepository = albumRepository;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string albumId = null, string date = null)
         {
             List<Photo> photos = await _photoRepository.GetAll();
+            //按照相册分组
+            var idGroups = photos.GroupBy(x => x.AlbumId).OrderBy(x=>x.Key);
+            List<PhotoViewAlbumViewModel> albumViewModelList = new List<PhotoViewAlbumViewModel>();
+            foreach (var group in idGroups)
+            {
+                if (group.Key == null)
+                {
+                    //idDic.Add("null", group.Count());
+                    albumViewModelList.Add(new PhotoViewAlbumViewModel
+                    {
+                        AlbumId = "null",
+                        AlbumName = "无相册",
+                        AlbumPhotoCount = group.Count(),
+                    });
+                }
+                else
+                {
+                    Album album = await _albumRepository.GetById((int)group.Key);
+                    albumViewModelList.Add(new PhotoViewAlbumViewModel
+                    {
+
+                        AlbumId = group.Key.ToString(),
+                        AlbumName = album.Title,
+                        AlbumPhotoCount = group.Count(),
+                    });
+                }
+            }
+
+            //按照日期分组
+            var dateGroups = photos.GroupBy(x => x.UploadDateTime.Date);
+            Dictionary<string, int> dateDic = new Dictionary<string, int>();
+            foreach (var group in dateGroups)
+            {
+                dateDic.Add(group.Key.Date.ToString("yyyy'-'MM'-'dd"), group.Count());
+            }
+
+            //Console.WriteLine(dateDic);
+            //使用ViewBag传递
+            ViewBag.AlbumViewModel = albumViewModelList;
+            ViewBag.DateDic = dateDic;
+            ViewBag.AllPhotoCount = photos.Count();
+
+            //接收传入的参数【相册】
+            if (albumId != null)
+            {
+                if (albumId == "null")
+                {
+                    photos = photos.Where(x => x.AlbumId == null).ToList();
+                }
+                else
+                {
+                    int id = Int32.Parse(albumId);
+                    photos = photos.Where(x => x.AlbumId == id).ToList();
+                }
+            }
+            //接收传入的参数【日期】
+            if (date != null)
+            {
+                DateTime d=DateTime.Parse(date);
+                photos = photos.Where(x => x.UploadDateTime.Date == d).ToList();
+            }
+
             return View(photos);
         }
         [HttpGet]
-        public async Task<IActionResult> AddPhotos(int? albumId=null)
+        public async Task<IActionResult> AddPhotos(int? albumId = null)
         {
             List<Album> albums = await _albumRepository.GetAll();
 
-            Album selectedAlbum=null;
+            Album selectedAlbum = null;
             if (albumId != null)
             {
-                selectedAlbum = albums.FirstOrDefault(x=>x.Id==albumId);
+                selectedAlbum = albums.FirstOrDefault(x => x.Id == albumId);
             }
 
             ViewBag.Albums = new SelectList(albums, "Id", "Title", selectedAlbum);
@@ -80,30 +142,47 @@ namespace PhotographyWebAppCore.Controllers
                 return View();
             }
         }
+
         [HttpGet]
-        public IActionResult AddOnePhoto()
+        public async Task<IActionResult> Update(int id, bool isSuccess = false)
         {
-            return View();
+            Photo photo = await _photoRepository.GetById(id);
+            List<Album> albums = await _albumRepository.GetAll();
+            ViewBag.Albums = new SelectList(albums, "Id", "Title");
+            ViewBag.IsSuccess = isSuccess;
+            return View(photo);
         }
         [HttpPost]
-        public async Task<IActionResult> AddOnePhoto(Photo photo)
+        public async Task<IActionResult> Update(Photo photo)
         {
-            if (ModelState.IsValid && photo.PhotoFile != null)
-            {
-                //把照片储存到本地文件夹
-                await SavePhoto(photo);
-                //调整图片大小，并储存到对应的文件夹中
-                photo.ResizeImageAndSaveCopies();
-                //提交到数据库
-                await _photoRepository.CreateOne(photo);
-                return View(photo);
-            }
-            else
-            {
-                return View();
-            }
-
+            Photo p = await _photoRepository.UpdateOne(photo);
+            return RedirectToAction(nameof(Update), new { id = p.Id, isSuccess = true });
         }
+
+        //[HttpGet]
+        //public IActionResult AddOnePhoto()
+        //{
+        //    return View();
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> AddOnePhoto(Photo photo)
+        //{
+        //    if (ModelState.IsValid && photo.PhotoFile != null)
+        //    {
+        //        //把照片储存到本地文件夹
+        //        await SavePhoto(photo);
+        //        //调整图片大小，并储存到对应的文件夹中
+        //        photo.ResizeImageAndSaveCopies();
+        //        //提交到数据库
+        //        await _photoRepository.CreateOne(photo);
+        //        return View(photo);
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+
+        //}
         [HttpPost]
         public async Task<IActionResult> DeleteOneById(int id)
         {

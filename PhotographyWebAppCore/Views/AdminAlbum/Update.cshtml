@@ -36,17 +36,13 @@
                 <div class="row flex-row flex-nowrap overflow-auto mx-1">
                     @foreach (Photo photo in Model.Photos)
                     {
-                        @*<div class="col-2 px-1 position-relative select-image">
-                            <input type="radio" class="position-absolute radio" value="@photo.Id" asp-for="CoverPhotoId" />
+                        <label class="col-2 px-1 position-relative select-image">
+                            <div class="custom-control custom-radio position-absolute">
+                                <input type="radio" class="position-absolute custom-control-input" value="@photo.Id" asp-for="CoverPhotoId" id="dum" />
+                                <label class="custom-control-label" for="dum"></label>
+                            </div>
                             <img src="/@photo.Path_Small" class="img-thumbnail" />
-                        </div>*@
-                    <label class="col-2 px-1 position-relative select-image">
-                        <div class="custom-control custom-radio position-absolute">
-                            <input type="radio" class="position-absolute custom-control-input" value="@photo.Id" asp-for="CoverPhotoId" id="dum" />
-                            <label class="custom-control-label" for="dum"></label>
-                        </div>
-                        <img src="/@photo.Path_Small" class="img-thumbnail" />
-                    </label>
+                        </label>
                     }
                 </div>
                 <span asp-validation-for="CoverPhotoId" class="text-danger"></span>

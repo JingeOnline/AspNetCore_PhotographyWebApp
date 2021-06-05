@@ -1,40 +1,94 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿
 @using PhotographyWebAppCore.Models
+@using PhotographyWebAppCore.ViewModels
 @model List<Photo>
-<h1>照片</h1>
 
-<h4 class="float-left mt-1">当前所有照片</h4>
-<div class="text-right pt-0">
-    <a asp-action="AddOnePhoto" class="btn btn-primary">+ 添加新照片（单张）</a>
-    <a asp-action="AddPhotos" class="btn btn-primary">+ 添加新照片（多张）</a>
+<div>
+    <h1>照片</h1>
+    <h4 class="float-left mt-1">当前所有照片</h4>
+    <div class="text-right pt-0">
+        @*<a asp-action="AddOnePhoto" class="btn btn-primary">+ 添加新照片（单张）</a>*@
+        <a asp-action="AddPhotos" class="btn btn-primary">+ 添加新照片</a>
+    </div>
+    <hr />
 </div>
-<hr />
 
-@if (Model != null && Model.Count() > 0)
-{
-    <div class="row">
-        @foreach (Photo photo in Model)
-        {
-            <div class="col-lg-2 col-md-3 mb-3">
-                <div class="card">
-                    <img class="card-img-top" src="/@photo.Path_Small" alt="Card image cap">
-                    <div class="card-footer">
-                        <h5 class="card-title">@photo.Title</h5>
-                        <p class="card-text">@photo.Description</p>
-                        @{
-                            string albumTitle = (photo.Album == null) ? "无" : photo.Album.Title;
-                        }
-                        <p class="card-text my-0"><small class="text-muted">所在相册：@albumTitle</small></p>
-                        <p class="card-text my-0"><small class="text-muted">上传时间：@photo.UploadDateTime.ToLocalTime()</small></p>
-                        <form method="post">
-                            <button class="btn btn-outline-primary btn-sm mt-3" name="id" value="@photo.Id" asp-action="DeleteOneById">删除</button>
-                        </form>
+<div class="row">
+    <div class="col-md-2">
+        <div class="list-group mb-3">
+            <h4 class="list-group-item list-group-item-action active text-center m-0">筛选</h4>
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center a-pointer"
+               asp-action="Index">
+                所有相片
+                <span class="badge badge-primary badge-pill">@ViewBag.AllPhotoCount</span>
+            </a>
+            <a class="list-group-item list-group-item-action"
+               data-toggle="collapse" href="#collapseAlbums" aria-expanded="false" aria-controls="collapseAlbums">所在相册</a>
+            <div class="collapse" id="collapseAlbums">
+                @foreach (PhotoViewAlbumViewModel albumViewModel in ViewBag.AlbumViewModel)
+                {
+                    <a class="list-group-item d-flex justify-content-between align-items-center" asp-action="Index"
+                       asp-route-albumId="@albumViewModel.AlbumId">
+                        @albumViewModel.AlbumName
+                        <span class="badge badge-primary badge-pill">@albumViewModel.AlbumPhotoCount</span>
+                    </a>
+                }
+            </div>
+            <a class="list-group-item list-group-item-action"
+               data-toggle="collapse" href="#collapseDate" aria-expanded="false" aria-controls="collapseDate">上传日期</a>
+            <div class="collapse" id="collapseDate">
+                @foreach (KeyValuePair<string, int> pair in ViewBag.DateDic)
+                {
+                    <a class="list-group-item d-flex justify-content-between align-items-center" asp-action="Index"
+                       asp-route-date="@pair.Key">
+                        @pair.Key
+                        <span class="badge badge-primary badge-pill">@pair.Value</span>
+                    </a>
+                }
+            </div>
+            @*<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
+                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>*@
+        </div>
+
+    </div>
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="row col-md-10 pr-0">
+            @foreach (Photo photo in Model)
+            {
+                <div class="col-lg-2 mb-3 pl-md-1 pr-0">
+                    <div class="card">
+                        <div class="card-header">
+                            <ul class="nav nav-pills card-header-pills">
+                                <li class="nav-item mx-1">
+                                    <a class="btn btn-outline-primary btn-sm" asp-action="Update" asp-route-id="@photo.Id">编辑</a>
+                                </li>
+                                <li class="nav-item mx-1">
+                                    <form method="post">
+                                        <button class="btn btn-outline-danger btn-sm" name="id" value="@photo.Id" asp-action="DeleteOneById">删除</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <img class="card-img-top" src="/@photo.Path_Small" alt="Card image cap">
+                        <div class="card-footer">
+                            <h5 class="card-title">@photo.Title</h5>
+                            <p class="card-text">@photo.Description</p>
+                            @{
+                                string albumTitle = (photo.Album == null) ? "无" : photo.Album.Title;
+                            }
+                            <p class="card-text my-0"><small class="text-muted">所在相册：@albumTitle</small></p>
+                            <p class="card-text my-0"><small class="text-muted">上传时间：@photo.UploadDateTime.ToLocalTime()</small></p>
+                            @*<form method="post">
+                                    <a class="btn btn-outline-primary btn-sm mt-3 mr-1" asp-action="Update" asp-route-id="@photo.Id">编辑</a>
+                                    <button class="btn btn-outline-danger btn-sm mt-3 mx-1" name="id" value="@photo.Id" asp-action="DeleteOneById">删除</button>
+                                </form>*@
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-}
+            }
+        </div>
+    }
 
+</div>

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
+    <header class="fixed-top">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a href="#">
                 <img src="~/images/logo.png" alt="logo" class="navbar-logo" />
@@ -31,7 +31,7 @@
                             <a class="dropdown-item" asp-controller="AdminPhoto" asp-action="Index">照片</a>
                             <a class="dropdown-item" asp-controller="AdminAlbum" asp-action="Index">相册</a>
                             <a class="dropdown-item" asp-controller="AdminCategory" asp-action="Index">类型</a>
-                            <a class="dropdown-item" href="#">摄影师</a>
+                            <a class="dropdown-item" asp-controller="AdminPhotographer" asp-action="Index">摄影师</a>
                         </div>
                     </li>
                     @*<li class="nav-item">
@@ -48,7 +48,7 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid">
+    <div class="container-fluid body-margin-top">
         @RenderBody()
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

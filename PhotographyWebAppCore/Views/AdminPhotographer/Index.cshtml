@@ -1,0 +1,54 @@
+﻿@using PhotographyWebAppCore.Models
+@model List<Photographer>
+
+<h1>摄影师</h1>
+
+<h4 class="float-left mt-1">当前所有摄影师</h4>
+<div class="text-right pt-0">
+    <a asp-action="CreateOne" class="btn btn-primary text-center">+ 添加新摄影师</a>
+</div>
+<hr />
+@if (Model != null && Model.Count() > 0)
+{
+    @foreach (Photographer photographer in Model)
+    {
+        <div class="col-md-10 mx-auto">
+            <div class="card text-center my-5">
+                <div class="card-header">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item mx-1">
+                            <form method="get">
+                                <button class="btn btn-outline-primary btn-sm" name="id" value="@photographer.Id" asp-action="UpdateById">编辑</button>
+                            </form>
+                        </li>
+                        <li class="nav-item mx-1">
+                            <form method="post">
+                                <button class="btn btn-outline-danger btn-sm" name="id" value="@photographer.Id" asp-action="DeleteById">删除</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body row">
+                    <div class="col-md-3 d-flex align-items-center justify-content-center mb-sm-0 mb-3">
+                        @{
+                            string avatarPath;
+                            if (photographer.Avatar == null)
+                            {
+                                avatarPath = "/images/image-placeholder.jpg";
+                            }
+                            else
+                            {
+                                avatarPath = "/" + photographer.Avatar.Path_Small;
+                            }
+                        }
+                        <img src="@avatarPath" class="img-fluid" />
+                    </div>
+                    <div class="col-md-9">
+                        <h5 class="card-title">@photographer.Name</h5>
+                        <p class="card-text text-left">@photographer.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -31,25 +31,8 @@ nav.navbar .nav-item {
     display: inline;
 }
 
-.light {
-    --primary: hsl(250, 100%, 44%);
-    --other: hsl(0, 0%, 14%);
-    background: hsl(0, 0%, 98%);
-}
-
-.dark {
-    --primary: hsl(1, 100%, 68%);
-    --other: hsl(0, 0%, 90%);
-    background: hsl(0, 0%, 10%);
-}
 
 
-/* h1 */
-h1 {
-    color: var(--other);
-    padding: 8px 4px;
-    border-bottom: 2px solid var(--other);
-}
 
 label.select-image{
     cursor:pointer;
@@ -58,4 +41,12 @@ label.select-image{
 div.custom-radio{
     top:4%;
     left:10%;
+}
+
+div.body-margin-top{
+    margin-top:72px;
+}
+
+a.a-pointer {
+    cursor: pointer;
 }
