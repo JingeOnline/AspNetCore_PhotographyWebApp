@@ -10,6 +10,7 @@ namespace PhotographyWebAppCore.ViewModels
     public class PhotoUploadViewModel
     {
         public int? AlbumId { get; set; }
+        public int? PhotographerId { get; set; }
         public List<IFormFile> Files { get; set; }
     }
 }

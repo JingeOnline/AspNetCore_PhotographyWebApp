@@ -22,6 +22,7 @@ namespace PhotographyWebAppCore.Models
 
         [Display(Name="头像")]
         public Photo Avatar { get; set; }
+        [Display(Name = "头像")]
         [ForeignKey("Avatar")]
         public int? AvatarId { get; set; }
         

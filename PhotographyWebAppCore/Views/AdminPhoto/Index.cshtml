@@ -35,6 +35,18 @@
                 }
             </div>
             <a class="list-group-item list-group-item-action"
+               data-toggle="collapse" href="#collapsePhotographers" aria-expanded="false" aria-controls="collapsePhotographers">摄影师</a>
+            <div class="collapse" id="collapsePhotographers">
+                @foreach (PhotoViewPhotographerViewModel photographerViewModel in ViewBag.PhotographerViewModel)
+                {
+                    <a class="list-group-item d-flex justify-content-between align-items-center" asp-action="Index"
+                       asp-route-photographerId="@photographerViewModel.PhotographerId">
+                        @photographerViewModel.PhotographerName
+                        <span class="badge badge-primary badge-pill">@photographerViewModel.PhotographerPhotoCount</span>
+                    </a>
+                }
+            </div>
+            <a class="list-group-item list-group-item-action"
                data-toggle="collapse" href="#collapseDate" aria-expanded="false" aria-controls="collapseDate">上传日期</a>
             <div class="collapse" id="collapseDate">
                 @foreach (KeyValuePair<string, int> pair in ViewBag.DateDic)
@@ -47,7 +59,7 @@
                 }
             </div>
             @*<a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>*@
+        <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>*@
         </div>
 
     </div>
@@ -79,11 +91,15 @@
                                 string albumTitle = (photo.Album == null) ? "无" : photo.Album.Title;
                             }
                             <p class="card-text my-0"><small class="text-muted">所在相册：@albumTitle</small></p>
+                            @{
+                                string photographerName = (photo.PhotographerId == null) ? "无" : photo.Photographer.Name;
+                            }
+                            <p class="card-text my-0"><small class="text-muted">摄影师：@photographerName</small></p>
                             <p class="card-text my-0"><small class="text-muted">上传时间：@photo.UploadDateTime.ToLocalTime()</small></p>
                             @*<form method="post">
-                                    <a class="btn btn-outline-primary btn-sm mt-3 mr-1" asp-action="Update" asp-route-id="@photo.Id">编辑</a>
-                                    <button class="btn btn-outline-danger btn-sm mt-3 mx-1" name="id" value="@photo.Id" asp-action="DeleteOneById">删除</button>
-                                </form>*@
+            <a class="btn btn-outline-primary btn-sm mt-3 mr-1" asp-action="Update" asp-route-id="@photo.Id">编辑</a>
+            <button class="btn btn-outline-danger btn-sm mt-3 mx-1" name="id" value="@photo.Id" asp-action="DeleteOneById">删除</button>
+        </form>*@
                         </div>
                     </div>
                 </div>

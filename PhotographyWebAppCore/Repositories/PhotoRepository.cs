@@ -20,7 +20,7 @@ namespace PhotographyWebAppCore.Repositories
         public async Task<List<Photo>> GetAll()
         {
             List<Photo> photos = await _context.Photo
-                .Include(x => x.Album).OrderByDescending(x => x.Id)
+                .Include(x => x.Album).OrderByDescending(x => x.Id).Include(x=>x.Photographer)
                 .ToListAsync();
             return photos;
         }
@@ -64,7 +64,7 @@ namespace PhotographyWebAppCore.Repositories
             {
                 p.Title = photo.Title;
                 p.Description = photo.Description;
-                p.Photographer = photo.Photographer;
+                p.PhotographerId = photo.PhotographerId;
                 p.LastUpdateDateTime = DateTime.UtcNow;
                 p.AlbumId = photo.AlbumId;
                 _context.SaveChanges();
@@ -79,7 +79,7 @@ namespace PhotographyWebAppCore.Repositories
                 Photo p = await _context.Photo.FindAsync(photo.Id);
                 p.Title = photo.Title;
                 p.Description = photo.Description;
-                p.Photographer = photo.Photographer;
+                p.PhotographerId = photo.PhotographerId;
                 p.AlbumId = photo.AlbumId;
                 p.LastUpdateDateTime = DateTime.UtcNow;
                 _context.SaveChanges();

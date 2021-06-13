@@ -48,6 +48,8 @@ namespace PhotographyWebAppCore.Controllers
             }
             else
             {
+                List<PhotoCategory> categories = await _categoryRepository.GetAll();
+                ViewBag.Categories = new SelectList(categories, "Id", "Name");
                 return View();
             }
         }

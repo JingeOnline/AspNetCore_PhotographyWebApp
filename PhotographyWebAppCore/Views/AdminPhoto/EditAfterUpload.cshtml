@@ -31,9 +31,16 @@
                         <div class="form-group">
                             <label asp-for="@Model[i].Album" class="control-label"></label>
                             <select asp-for="@Model[i].AlbumId" class="form-control" asp-items="@ViewBag.Albums">
-                                <option value="">请选择相册</option>
+                                <option value="">--未指定相册--</option>
                             </select>
                             <span asp-validation-for="@Model[i].Album" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="@Model[i].Photographer" class="control-label"></label>
+                            <select asp-for="@Model[i].PhotographerId" class="form-control" asp-items="@ViewBag.Photographers">
+                                <option value="">--未指定摄影师--</option>
+                            </select>
+                            <span asp-validation-for="@Model[i].Photographer" class="text-danger"></span>
                         </div>
                     </div>
                 </div>
