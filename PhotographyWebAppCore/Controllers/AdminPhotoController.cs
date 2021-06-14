@@ -200,9 +200,9 @@ namespace PhotographyWebAppCore.Controllers
         {
             Photo photo = await _photoRepository.GetById(id);
             List<Album> albums = await _albumRepository.GetAll();
-            //List<Photographer> photographers = await _photographerRepository.GetAll();
+            List<Photographer> photographers = await _photographerRepository.GetAll();
             ViewBag.Albums = new SelectList(albums, "Id", "Title");
-            //ViewBag.Photographers = new SelectList(photographers, "Id", "Name", selectedpPhotographer);
+            ViewBag.Photographers = new SelectList(photographers, "Id", "Name");
             ViewBag.IsSuccess = isSuccess;
             return View(photo);
         }

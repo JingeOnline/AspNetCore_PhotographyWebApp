@@ -50,3 +50,7 @@ div.body-margin-top{
 a.a-pointer {
     cursor: pointer;
 }
+
+p.keep-white-space{
+    white-space:pre-wrap;
+}

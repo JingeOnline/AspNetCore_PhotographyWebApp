@@ -17,7 +17,11 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<List<Photographer>> GetAll()
         {
-            List<Photographer> photographers = await _context.Photographer.Include(x => x.Avatar).ToListAsync();
+            List<Photographer> photographers = await _context.Photographer
+                .Include(x => x.Avatar)
+                .Include(x=>x.Photos)
+                .OrderByDescending(x=>x.Id)
+                .ToListAsync();
             return photographers;
         }
 

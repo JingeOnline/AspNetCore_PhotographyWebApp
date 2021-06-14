@@ -45,8 +45,26 @@
                     </div>
                     <div class="col-md-9">
                         <h5 class="card-title">@photographer.Name</h5>
-                        <p class="card-text text-left">@photographer.Description</p>
+                        <p class="card-text text-left keep-white-space">@photographer.Description</p>
+                        @{
+                            int photocount = (photographer.Photos == null) ? 0 : photographer.Photos.Count;
+                        }
+                        <p class="card-text text-left my-0"><small class="text-muted">照片数量：@photocount</small></p>
                     </div>
+                    @if (photocount > 0)
+                    {
+                        <div class="card-footer">
+
+                            <div class="row flex-row flex-nowrap overflow-auto">
+                                @foreach (Photo photo in photographer.Photos)
+                                {
+                                    <div class="col-2 px-1">
+                                        <img src="/@photo.Path_Small" class="img-thumbnail" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

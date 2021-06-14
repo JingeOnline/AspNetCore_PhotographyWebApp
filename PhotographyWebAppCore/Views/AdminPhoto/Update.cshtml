@@ -35,6 +35,13 @@
                         </select>
                         <span asp-validation-for="@Model.Album" class="text-danger"></span>
                     </div>
+                    <div class="form-group row">
+                        <label asp-for="@Model.Photographer" class="control-label col-3"></label>
+                        <select asp-for="@Model.PhotographerId" class="form-control col-9" asp-items="@ViewBag.Photographers">
+                            <option value="">--未指定摄影师--</option>
+                        </select>
+                        <span asp-validation-for="@Model.Photographer" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PhotographyWebAppCore.Models;
 using PhotographyWebAppCore.Repositories;
+using PhotographyWebAppCore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,26 +14,67 @@ namespace PhotographyWebAppCore.Controllers
     {
         private readonly IAlbumRepository _albumRepository;
         private readonly ICategoryRepository _categoryRepository;
-        public AdminAlbumController(IAlbumRepository albumRepository,ICategoryRepository categoryRepository)
+        public AdminAlbumController(IAlbumRepository albumRepository, ICategoryRepository categoryRepository)
         {
             _albumRepository = albumRepository;
             _categoryRepository = categoryRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string categoryId = null)
         {
             List<Album> albums = await _albumRepository.GetAll();
+            ViewBag.AllAlbumCount = (albums == null) ? 0 : albums.Count();
+            //按照类型分组
+            List<AlbumViewCategoryViewModel> categoryViewModelList = new List<AlbumViewCategoryViewModel>();
+            var categoryGroups = albums.GroupBy(x => x.CategoryId).OrderBy(x => x.Key);
+            foreach (var group in categoryGroups)
+            {
+                if (group.Key == null)
+                {
+                    categoryViewModelList.Add(new AlbumViewCategoryViewModel
+                    {
+                        CategoryId = "null",
+                        CategoryName = "未指定",
+                        AlbumCount = group.Count(),
+                    });
+                }
+                else
+                {
+                    PhotoCategory category = await _categoryRepository.GetById((int)group.Key);
+                    categoryViewModelList.Add(new AlbumViewCategoryViewModel
+                    {
+                        CategoryId = group.Key.ToString(),
+                        CategoryName = category.Name,
+                        AlbumCount = group.Count(),
+                    });
+                }
+            }
+            ViewBag.CategoryViewModel = categoryViewModelList;
+            //接收传入的参数【类型】
+            if (categoryId != null)
+            {
+                if (categoryId == "null")
+                {
+                    albums = albums.Where(x => x.CategoryId == null).ToList();
+                }
+                else
+                {
+                    int id = Int32.Parse(categoryId);
+                    albums = albums.Where(x => x.CategoryId == id).ToList();
+                }
+            }
+
             return View(albums);
         }
         [HttpGet]
-        public async Task<IActionResult> CreateOne(string albumName=null, bool isSuccess=false, int? albumId=null)
+        public async Task<IActionResult> CreateOne(string albumName = null, bool isSuccess = false, int? albumId = null)
         {
             //ViewBag.IsSuccess = isSuccess;
             List<PhotoCategory> categories = await _categoryRepository.GetAll();
             //下拉选择菜单
             //第一个参数是要传入的列表，第二个参数是作为value提交的字段，第三个参数是作为text显示的字段。
-            ViewBag.Categories = new SelectList(categories,"Id","Name");
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
             ViewBag.IsSuccess = isSuccess;
             ViewBag.AlbumName = albumName;
             ViewBag.AlbumId = albumId;
@@ -44,7 +86,7 @@ namespace PhotographyWebAppCore.Controllers
             if (ModelState.IsValid)
             {
                 Album a = await _albumRepository.CreateOne(album);
-                return RedirectToAction(nameof(CreateOne),new { isSuccess=true,albumName=a.Title,albumId=a.Id});
+                return RedirectToAction(nameof(CreateOne), new { isSuccess = true, albumName = a.Title, albumId = a.Id });
             }
             else
             {
@@ -69,10 +111,10 @@ namespace PhotographyWebAppCore.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int id)
         {
-            Album album =await _albumRepository.GetById(id);
+            Album album = await _albumRepository.GetById(id);
             PhotoCategory category = album.Category;
             List<PhotoCategory> categories = await _categoryRepository.GetAll();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name",category);
+            ViewBag.Categories = new SelectList(categories, "Id", "Name", category);
             return View(album);
         }
         [HttpPost]

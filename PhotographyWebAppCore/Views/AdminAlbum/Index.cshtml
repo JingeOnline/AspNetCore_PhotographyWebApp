@@ -1,4 +1,5 @@
 ﻿@using PhotographyWebAppCore.Models
+@using PhotographyWebAppCore.ViewModels
 @model List<Album>
 
 <h1>相册</h1>
@@ -8,96 +9,124 @@
     <a asp-action="CreateOne" class="btn btn-primary text-center">+ 创建新相册</a>
 </div>
 <hr />
-@if (Model != null && Model.Count() > 0)
-{
-    @foreach (Album album in Model)
-    {
-        <div class="col-md-10 mx-auto">
-            <div class="card text-center my-5">
-                <div class="card-header">
-                    <ul class="nav nav-pills card-header-pills">
-                        <li class="nav-item mx-1">
-                            <a class="btn btn-outline-primary btn-sm" asp-action="Update" asp-route-id="@album.Id">编辑</a>
-                        </li>
-                        <li class="nav-item mx-1">
-                            <a class="btn btn-outline-primary btn-sm" asp-controller="AdminPhoto" asp-action="AddPhotos" asp-route-albumId="@album.Id">上传照片</a>
-                        </li>
-                        <li class="nav-item mx-1">
-                            <form method="post">
-                                <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#DeleteDialogue_@(album.Id)">删除相册</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body row">
-                    <div class="col-sm-3 d-flex align-items-center justify-content-center mb-sm-0 mb-3">
-                        @{
-                            string coverPhotoPath;
-                            if (album.CoverPhoto == null)
-                            {
-                                coverPhotoPath = "/images/image-placeholder.jpg";
-                            }
-                            else
-                            {
-                                coverPhotoPath = "/" + album.CoverPhoto.Path_Small;
-                            }
-                        }
-                        <img src="@coverPhotoPath" class="img-fluid" />
-                    </div>
-                    <div class="col-sm-9">
-                        <h5 class="card-title">@album.Title</h5>
-                        <p class="card-text text-left">@album.Description</p>
-                        <p class="card-text text-left my-0"><small class="text-muted">类型：@album.Category.Name</small></p>
-                        @{
-                            int photocount = (album.Photos == null) ? 0 : album.Photos.Count;
-                        }
-                        <p class="card-text text-left my-0"><small class="text-muted">照片数量：@photocount</small></p>
-                        <p class="card-text text-left my-0"><small class="text-muted">创建时间：@album.CreatedDateTime.ToLocalTime()</small></p>
-                        <p class="card-text text-left my-0"><small class="text-muted">更新时间：@album.LastUpdate.ToLocalTime()</small></p>
-                    </div>
-
-                </div>
-
-                @if (photocount > 0)
+<div class="row">
+    <div class="col-md-2">
+        <div class="list-group mb-3">
+            <h4 class="list-group-item list-group-item-action active text-center m-0">筛选</h4>
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center a-pointer"
+               asp-action="Index">
+                所有相册
+                <span class="badge badge-primary badge-pill">@ViewBag.AllAlbumCount</span>
+            </a>
+            <a class="list-group-item list-group-item-action"
+               data-toggle="collapse" href="#collapseAlbums" aria-expanded="false" aria-controls="collapseAlbums">所属类型</a>
+            <div class="collapse" id="collapseAlbums">
+                @foreach (AlbumViewCategoryViewModel albumViewModel in ViewBag.CategoryViewModel)
                 {
-                    <div class="card-footer">
-
-                        <div class="row flex-row flex-nowrap overflow-auto">
-                            @foreach (Photo photo in album.Photos)
-                            {
-                                <div class="col-2 px-1">
-                                    <img src="/@photo.Path_Small" class="img-thumbnail" />
-                                </div>
-                            }
-                        </div>
-                    </div>
+                    <a class="list-group-item d-flex justify-content-between align-items-center" asp-action="Index"
+                       asp-route-categoryId="@albumViewModel.CategoryId">
+                        @albumViewModel.CategoryName
+                        <span class="badge badge-primary badge-pill">@albumViewModel.AlbumCount</span>
+                    </a>
                 }
             </div>
         </div>
-        <div class="modal fade" id="DeleteDialogue_@(album.Id)" tabindex="-1" aria-labelledby="DeleteDialogueTitle_@(album.Id)" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="DeleteDialogueTitle_@(album.Id)">删除相册</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        是否同时删除相册内的所有照片？
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
-                        <form method="post">
-                            <button class="btn btn-danger" name="id" value="@album.Id" asp-action="DeleteByIdAndPhotos">是，删除照片</button>
-                        </form>
-                        <form method="post">
-                            <button class="btn btn-danger" name="id" value="@album.Id" asp-action="DeleteById">否，保留照片</button>
-                        </form>
+    </div>
+
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <div class="row col-md-10 pr-0">
+            @foreach (Album album in Model)
+            {
+                <div id="album_@(album.Id)">
+                    <div class="card text-center my-5">
+                        <div class="card-header">
+                            <ul class="nav nav-pills card-header-pills">
+                                <li class="nav-item mx-1">
+                                    <a class="btn btn-outline-primary btn-sm" asp-action="Update" asp-route-id="@album.Id">编辑</a>
+                                </li>
+                                <li class="nav-item mx-1">
+                                    <a class="btn btn-outline-primary btn-sm" asp-controller="AdminPhoto" asp-action="AddPhotos" asp-route-albumId="@album.Id">上传照片</a>
+                                </li>
+                                <li class="nav-item mx-1">
+                                    <form method="post">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#DeleteDialogue_@(album.Id)">删除相册</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body row">
+                            <div class="col-sm-3 d-flex align-items-center justify-content-center mb-sm-0 mb-3">
+                                @{
+                                    string coverPhotoPath;
+                                    if (album.CoverPhoto == null)
+                                    {
+                                        coverPhotoPath = "/images/image-placeholder.jpg";
+                                    }
+                                    else
+                                    {
+                                        coverPhotoPath = "/" + album.CoverPhoto.Path_Small;
+                                    }
+                                }
+                                <img src="@coverPhotoPath" class="img-fluid" />
+                            </div>
+                            <div class="col-sm-9">
+                                <h5 class="card-title">@album.Title</h5>
+                                <p class="card-text text-left keep-white-space">@album.Description</p>
+                                <p class="card-text text-left my-0"><small class="text-muted">类型：@album.Category.Name</small></p>
+                                @{
+                                    int photocount = (album.Photos == null) ? 0 : album.Photos.Count;
+                                }
+                                <p class="card-text text-left my-0"><small class="text-muted">照片数量：@photocount</small></p>
+                                <p class="card-text text-left my-0"><small class="text-muted">创建时间：@album.CreatedDateTime.ToLocalTime()</small></p>
+                                <p class="card-text text-left my-0"><small class="text-muted">更新时间：@album.LastUpdate.ToLocalTime()</small></p>
+                            </div>
+
+                        </div>
+
+                        @if (photocount > 0)
+                        {
+                            <div class="card-footer">
+
+                                <div class="row flex-row flex-nowrap overflow-auto">
+                                    @foreach (Photo photo in album.Photos)
+                                    {
+                                        <div class="col-2 px-1">
+                                            <img src="/@photo.Path_Small" class="img-thumbnail" />
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-            </div>
+                <div class="modal fade" id="DeleteDialogue_@(album.Id)" tabindex="-1" aria-labelledby="DeleteDialogueTitle_@(album.Id)" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="DeleteDialogueTitle_@(album.Id)">删除相册</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                是否同时删除相册内的所有照片？
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
+                                <form method="post">
+                                    <button class="btn btn-danger" name="id" value="@album.Id" asp-action="DeleteByIdAndPhotos">是，删除照片</button>
+                                </form>
+                                <form method="post">
+                                    <button class="btn btn-danger" name="id" value="@album.Id" asp-action="DeleteById">否，保留照片</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     }
-}
 
+</div>

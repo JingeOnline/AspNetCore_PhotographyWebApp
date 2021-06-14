@@ -411,7 +411,7 @@ namespace PhotographyWebAppCore.Migrations
             modelBuilder.Entity("PhotographyWebAppCore.Models.Album", b =>
                 {
                     b.HasOne("PhotographyWebAppCore.Models.PhotoCategory", "Category")
-                        .WithMany()
+                        .WithMany("Albums")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("PhotographyWebAppCore.Models.Photo", "CoverPhoto")

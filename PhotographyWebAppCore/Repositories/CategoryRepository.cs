@@ -18,7 +18,8 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<List<PhotoCategory>> GetAll()
         {
-            return await _context.PhotoCategory.ToListAsync();
+            return await _context.PhotoCategory.Include(x=>x.Albums).ThenInclude(y=>y.CoverPhoto)
+                .OrderByDescending(x=>x.Id).ToListAsync();
         }
 
         public async Task<PhotoCategory> GetById(int id)

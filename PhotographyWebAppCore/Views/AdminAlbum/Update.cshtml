@@ -38,8 +38,8 @@
                     {
                         <label class="col-2 px-1 position-relative select-image">
                             <div class="custom-control custom-radio position-absolute">
-                                <input type="radio" class="position-absolute custom-control-input" value="@photo.Id" asp-for="CoverPhotoId" id="dum" />
-                                <label class="custom-control-label" for="dum"></label>
+                                <input type="radio" class="position-absolute custom-control-input" value="@photo.Id" asp-for="CoverPhotoId" id="photo@(photo.Id)" />
+                                <label class="custom-control-label" for="photo@(photo.Id)"></label>
                             </div>
                             <img src="/@photo.Path_Small" class="img-thumbnail" />
                         </label>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhotographyWebAppCore.Models
 {
@@ -14,5 +15,8 @@ namespace PhotographyWebAppCore.Models
         public string Name { get; set; }
         [Required,Display(Name="类型描述"),MaxLength(length:1024)]
         public string Description { get; set; }
+        [InverseProperty("Category")]
+        [Display(Name ="包含相册")]
+        public List<Album> Albums { get; set; }
     }
 }

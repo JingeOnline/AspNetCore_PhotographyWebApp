@@ -31,7 +31,34 @@
                 <div class="card-body">
                     <h5 class="card-title">@category.Name</h5>
                     <p class="card-text text-left">@category.Description</p>
+                    @{
+                        int albumCount = 0;
+                        if (category.Albums != null)
+                        {
+                            albumCount = category.Albums.Count();
+                        }
+                    }
+
+                    <p class="card-text text-left my-0"><small class="text-muted">相册数量：@albumCount</small></p>
                 </div>
+                @if (albumCount > 0)
+                {
+
+                    <div class="card-footer">
+                        <div class="row flex-row flex-nowrap overflow-auto">
+                            @foreach (Album album in category.Albums)
+                            {
+                                <div class="col-2 px-1">
+                                    <a asp-controller="AdminAlbum" asp-action="Index" asp-fragment="album_@(album.Id)">
+                                        <img src="/@album.CoverPhoto.Path_Small" class="img-thumbnail" />
+                                        <p class="mb-0">@album.Title</p>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                }
             </div>
         </div>
     }
