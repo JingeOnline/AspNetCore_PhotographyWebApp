@@ -60,6 +60,8 @@ namespace PhotographyWebAppCore
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
             });
+            //读取appsettings.json文件中的Appsetting对象
+            services.Configure<AppConfig>(Configuration.GetSection("AppConfig"));
             //依赖注入
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();

@@ -11,10 +11,12 @@ namespace PhotographyWebAppCore.Controllers
     public class AdminCategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IPhotoRepository _photoRepository;
 
-        public AdminCategoryController(ICategoryRepository categoryRepository)
+        public AdminCategoryController(ICategoryRepository categoryRepository,IPhotoRepository photoRepository)
         {
             _categoryRepository = categoryRepository;
+            _photoRepository = photoRepository;
         }
 
         [HttpGet]
@@ -24,8 +26,11 @@ namespace PhotographyWebAppCore.Controllers
             return View(photoCategories);
         }
         [HttpGet]
-        public IActionResult CreateOne(bool isSuccess = false)
+        public async Task<IActionResult> CreateOne(bool isSuccess = false)
         {
+            List<Photo> photos = await _photoRepository.GetAll();
+            photos = photos.Where(x => x.AlbumId == null).ToList();
+            ViewBag.Photos = photos;
             ViewBag.IsSuccess = isSuccess;
             return View();
         }
@@ -53,6 +58,10 @@ namespace PhotographyWebAppCore.Controllers
         [HttpGet]
         public async Task<IActionResult> UpdateById(int id, bool isSuccess = false)
         {
+            List<Photo> photos = await _photoRepository.GetAll();
+            photos = photos.Where(x => x.AlbumId == null).ToList();
+            ViewBag.Photos = photos;
+
             PhotoCategory photoCategory = await _categoryRepository.GetById(id);
             ViewBag.IsSuccess = isSuccess;
             return View(photoCategory);

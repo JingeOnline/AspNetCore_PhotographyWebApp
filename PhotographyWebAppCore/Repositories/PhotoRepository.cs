@@ -20,7 +20,7 @@ namespace PhotographyWebAppCore.Repositories
         public async Task<List<Photo>> GetAll()
         {
             List<Photo> photos = await _context.Photo
-                .Include(x => x.Album).OrderByDescending(x => x.Id).Include(x=>x.Photographer)
+                .Include(x => x.Album).OrderByDescending(x => x.Id).Include(x => x.Photographer)
                 .ToListAsync();
             return photos;
         }
@@ -46,7 +46,7 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<List<Photo>> CreateMultiple(List<Photo> photos)
         {
-            foreach(Photo photo in photos)
+            foreach (Photo photo in photos)
             {
                 photo.Title = Path.GetFileNameWithoutExtension(photo.PhotoFile.FileName);
                 photo.UploadDateTime = DateTime.UtcNow;
@@ -74,7 +74,7 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task UpdateMultiple(List<Photo> photos)
         {
-            foreach(Photo photo in photos)
+            foreach (Photo photo in photos)
             {
                 Photo p = await _context.Photo.FindAsync(photo.Id);
                 p.Title = photo.Title;
@@ -88,11 +88,17 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task DeleteById(int id)
         {
-            Photo photo = await _context.Photo.FindAsync(id);
+            Photo photo = await _context.Photo.Include(x => x.Album).FirstOrDefaultAsync(y => y.Id == id);
+
             if (photo != null)
             {
-            _context.Photo.Remove(photo);
-            _context.SaveChanges();
+                //先删除作为相册封面照片的外键关联
+                if (photo.Album.CoverPhotoId == id)
+                {
+                    photo.Album.CoverPhotoId = null;
+                }
+                _context.Photo.Remove(photo);
+                _context.SaveChanges();
             }
         }
     }

@@ -28,18 +28,34 @@
                         </li>
                     </ul>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">@category.Name</h5>
-                    <p class="card-text text-left">@category.Description</p>
-                    @{
-                        int albumCount = 0;
-                        if (category.Albums != null)
-                        {
-                            albumCount = category.Albums.Count();
+                <div class="card-body row">
+                    <div class="col-md-4">
+                        @{
+                            string coverPath;
+                            if (category.CoverPhotoId == null)
+                            {
+                                coverPath = "/images/image-placeholder.jpg";
+                            }
+                            else
+                            {
+                                coverPath = "/" + category.CoverPhoto.Path_Middle;
+                            }
                         }
-                    }
+                        <img src="@coverPath" class="img-fluid" />
+                    </div>
+                    <div class="col-md-8">
+                        <h5 class="card-title">@category.Name</h5>
+                        <p class="card-text text-left">@category.Description</p>
+                        @{
+                            int albumCount = 0;
+                            if (category.Albums != null)
+                            {
+                                albumCount = category.Albums.Count();
+                            }
+                        }
 
-                    <p class="card-text text-left my-0"><small class="text-muted">相册数量：@albumCount</small></p>
+                        <p class="card-text text-left my-0"><small class="text-muted">相册数量：@albumCount</small></p>
+                    </div>
                 </div>
                 @if (albumCount > 0)
                 {

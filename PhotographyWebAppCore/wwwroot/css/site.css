@@ -6,6 +6,10 @@ nav.navbar .nav-item {
     margin: 0 3rem
 }
 
+header.fixed-header {
+    padding-bottom: 64px;
+}
+
 /*此处覆盖bricklayer.css中的设置，自定义瀑布流显示的列数*/
 /*注意，若要覆盖bricklayer.css中的设置，在_Layout.cshtml中，引用site.css必须放在引用bricklayer.css的后面。*/
 @media screen and (min-width: 768px) {
@@ -33,24 +37,61 @@ nav.navbar .nav-item {
 
 
 
-
-label.select-image{
-    cursor:pointer;
+/*设置图片的选择图标为小手*/
+label.select-image {
+    cursor: pointer;
 }
 
-div.custom-radio{
-    top:4%;
-    left:10%;
+div.custom-radio {
+    top: 4%;
+    left: 10%;
 }
 
-div.body-margin-top{
-    margin-top:72px;
+div.body-margin-top {
+    margin-top: 72px;
 }
 
+/*让a标签的鼠标图像恢复成小手*/
 a.a-pointer {
     cursor: pointer;
 }
 
-p.keep-white-space{
-    white-space:pre-wrap;
+/*让P标签能够输出空格和换行*/
+p.keep-white-space {
+    white-space: pre-wrap;
+}
+
+/*div.carousel-item {
+    height: 800px;
+    width:100%
+}*/
+
+/*幻灯片图片大小*/
+/*桌面生效*/
+div.carousel-item img {
+    height: 800px;
+    object-fit: cover
+}
+/*手机生效*/
+@media(max-width:992px) {
+    div.carousel-item img {
+        height: 300px;
+        object-fit: cover
+    }
+}
+
+img.category-background {
+    opacity: 0.1;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+/*使用此种方法可以设置背景图片的透明度*/
+div.background-image {
+    background: linear-gradient( rgba(255, 255, 255, 0.8) 100%, rgba(255, 255, 255, 0.8)100%),url("https://mylittleone.photography/wp-content/uploads/2021/06/Sydney-Maternity-Photo-Amy-00001.jpg");
+    background-size: cover;
+    vertical-align: central;
+    background-position: center;
 }

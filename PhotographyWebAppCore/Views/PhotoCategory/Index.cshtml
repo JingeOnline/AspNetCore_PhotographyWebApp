@@ -1,84 +1,21 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using PhotographyWebAppCore.Models
 @{
+    PhotoCategory category = ViewBag.Category;
 }
-@*<div class="row row-cols-1 row-cols-md-3">*@
-@*<div class="card-columns">*@
-<div class="bricklayer">
 
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/001/001_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
+
+<div class="jumbotron background-image">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img src="/@category.CoverPhoto.Path_Middle" class="img-fluid" />
         </div>
-   
-  
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/002/002_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
+        <div class="col-md-8 ">
+            <h1 class="display-4">@category.Name</h1>
+            <p class="lead">@category.Description</p>
+            <hr class="my-4">
+            <p>现在预定享受7折优惠！快来看看近期优惠套餐!</p>
+            <a class="btn btn-primary btn" href="#" role="button">查看套餐</a>
         </div>
-  
-   
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/003/003_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-            </div>
-        </div>
-   
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/004/004_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-        </div>
-   
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/005/005_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-            </div>
-        </div>
-   
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/006/006_1.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-        </div>
-  
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/001/001_11.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-        </div>
-    
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/002/002_11.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-            </div>
-        </div>
-  
-        <div class="card my-3 mx-1">
-            <img src="~/images/albums/003/003_11.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            </div>
-        </div>
-    
+    </div>
+    @*<img src="https://wallsdesk.com/wp-content/uploads/2016/11/Winter-Girl-Computer-Wallpaper.jpg" class="category-background" />*@
 </div>

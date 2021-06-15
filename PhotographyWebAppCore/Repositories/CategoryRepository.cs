@@ -18,13 +18,14 @@ namespace PhotographyWebAppCore.Repositories
 
         public async Task<List<PhotoCategory>> GetAll()
         {
-            return await _context.PhotoCategory.Include(x=>x.Albums).ThenInclude(y=>y.CoverPhoto)
+            return await _context.PhotoCategory.Include(x=>x.CoverPhoto)
+                .Include(x=>x.Albums).ThenInclude(y=>y.CoverPhoto)
                 .OrderByDescending(x=>x.Id).ToListAsync();
         }
 
         public async Task<PhotoCategory> GetById(int id)
         {
-            return await _context.PhotoCategory.FindAsync(id);
+            return await _context.PhotoCategory.Include(x => x.CoverPhoto).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<PhotoCategory> CreateOne(PhotoCategory photoCategory)
@@ -39,6 +40,7 @@ namespace PhotographyWebAppCore.Repositories
             PhotoCategory category = await _context.PhotoCategory.FindAsync(photoCategory.Id);
             category.Name = photoCategory.Name;
             category.Description = photoCategory.Description;
+            category.CoverPhotoId = photoCategory.CoverPhotoId;
             _context.SaveChanges();
             return category;
         }

@@ -1,0 +1,42 @@
+﻿@model List<PhotoCategory>; 
+
+<div class="collapse navbar-collapse textal" id="navbarNav">
+    <ul class="navbar-nav mx-auto">
+        <li class="nav-item active">
+            <a class="nav-link" asp-controller="Home" asp-action="Index">主页</a>
+        </li>
+        @*<li class="nav-item">
+                <a class="nav-link" href="#">经典案例</a>
+            </li>*@
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                经典案例
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                @if (Model != null && Model.Count != 0)
+                {
+                    @foreach (PhotoCategory category in Model)
+                    {
+                        <a class="dropdown-item" asp-controller="PhotoCategory" asp-action="Index" asp-route-categoryId="@category.Id">@category.Name</a>
+                    }
+                }
+
+                @*<a class="dropdown-item" asp-controller="PhotoCategory" asp-action="Index">人像写真</a>
+                <a class="dropdown-item" href="#">婚纱摄影</a>
+                <a class="dropdown-item" href="#">婚礼记录</a>
+                <a class="dropdown-item" href="#">儿童摄影</a>
+                <a class="dropdown-item" href="#">亲子照</a>
+                <a class="dropdown-item" href="#">活动跟拍</a>*@
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">优惠套餐</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">在线服务</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">走进摄影师</a>
+        </li>
+    </ul>
+</div>

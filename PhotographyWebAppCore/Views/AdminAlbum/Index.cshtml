@@ -90,12 +90,12 @@
                             <div class="card-footer">
 
                                 <div class="row flex-row flex-nowrap overflow-auto">
-                                    @foreach (Photo photo in album.Photos)
-                                    {
-                                        <div class="col-2 px-1">
-                                            <img src="/@photo.Path_Small" class="img-thumbnail" />
-                                        </div>
-                                    }
+                                    @foreach (Photo photo in album.Photos.Reverse<Photo>())
+                                        {
+                                            <div class="col-2 px-1">
+                                                <img src="/@photo.Path_Small" class="img-thumbnail" />
+                                            </div>
+                                        }
                                 </div>
                             </div>
                         }

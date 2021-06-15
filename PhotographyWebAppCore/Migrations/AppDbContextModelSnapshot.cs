@@ -315,6 +315,9 @@ namespace PhotographyWebAppCore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CoverPhotoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(1024)")
@@ -326,6 +329,8 @@ namespace PhotographyWebAppCore.Migrations
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CoverPhotoId");
 
                     b.ToTable("PhotoCategory");
                 });
@@ -428,6 +433,13 @@ namespace PhotographyWebAppCore.Migrations
                     b.HasOne("PhotographyWebAppCore.Models.Photographer", "Photographer")
                         .WithMany("Photos")
                         .HasForeignKey("PhotographerId");
+                });
+
+            modelBuilder.Entity("PhotographyWebAppCore.Models.PhotoCategory", b =>
+                {
+                    b.HasOne("PhotographyWebAppCore.Models.Photo", "CoverPhoto")
+                        .WithMany()
+                        .HasForeignKey("CoverPhotoId");
                 });
 
             modelBuilder.Entity("PhotographyWebAppCore.Models.Photographer", b =>

@@ -18,5 +18,10 @@ namespace PhotographyWebAppCore.Models
         [InverseProperty("Category")]
         [Display(Name ="包含相册")]
         public List<Album> Albums { get; set; }
+
+        [ForeignKey(nameof(CoverPhotoId))]
+        public Photo CoverPhoto { get; set; }
+        public int? CoverPhotoId { get; set; }
+
     }
 }
