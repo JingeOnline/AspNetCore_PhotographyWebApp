@@ -61,10 +61,7 @@ p.keep-white-space {
     white-space: pre-wrap;
 }
 
-/*div.carousel-item {
-    height: 800px;
-    width:100%
-}*/
+
 
 /*幻灯片图片大小*/
 /*桌面生效*/
@@ -79,19 +76,87 @@ div.carousel-item img {
         object-fit: cover
     }
 }
-
+/*
 img.category-background {
     opacity: 0.1;
     height: 100%;
     width: 100%;
     object-fit: cover;
     overflow: hidden;
-}
+}*/
 
 /*使用此种方法可以设置背景图片的透明度*/
 div.background-image {
-    background: linear-gradient( rgba(255, 255, 255, 0.8) 100%, rgba(255, 255, 255, 0.8)100%),url("https://mylittleone.photography/wp-content/uploads/2021/06/Sydney-Maternity-Photo-Amy-00001.jpg");
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8)100%, rgba(255, 255, 255, 0.8)100%),url("https://mylittleone.photography/wp-content/uploads/2021/06/Sydney-Maternity-Photo-Amy-00001.jpg");
     background-size: cover;
     vertical-align: central;
     background-position: center;
 }
+
+/*直接添加img作为背景图片*/
+img.as-background {
+    width:100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.1;
+    object-fit:cover;
+
+    object-position:center;
+}
+/*img标签的外面的div元素*/
+div.as-background-wrapper {
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;   
+}
+
+/*页面中的组标题*/
+div.group-title{
+    margin-top:50px;
+    margin-bottom:50px;
+    position:relative;
+    margin-left:-50px;
+    margin-right:-50px;
+}
+
+@media(max-width:768px){
+    div.group-title {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+
+span.group-title-line {
+    width: 100%;
+    display: inline-block;
+    border-top: 1px solid #636262;
+}
+
+span.group-title-content {
+    position: absolute;
+    font-size: 25px;
+    line-height: 30px;
+    left: 50px;
+    /*top: 5px;*/
+    background-color: white;
+    padding: 0 10px;
+}
+
+/*鼠标进入后，元素放大*/
+.zoom:hover {
+    transform: scale(1.1);
+    z-index:2;
+    transition-duration:400ms;
+}
+
+/*清除a标签自带的style*/
+a.clear-a-style {
+    color: inherit;
+}
+    a.clear-a-style:hover {
+        color: inherit;
+        text-decoration: none;
+    }

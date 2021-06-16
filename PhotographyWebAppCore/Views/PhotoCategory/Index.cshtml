@@ -2,20 +2,65 @@
 @{
     PhotoCategory category = ViewBag.Category;
 }
+@model List<Album>;
 
-
-<div class="jumbotron background-image">
+<div class="jumbotron bg-white py-0">
     <div class="row">
         <div class="col-md-4 text-center">
-            <img src="/@category.CoverPhoto.Path_Middle" class="img-fluid" />
+            @{
+                string coverPhotoPath;
+                coverPhotoPath = (category.CoverPhoto == null) ? "images/image-placeholder.jpg" : category.CoverPhoto.Path_Big;
+            }
+            <img src="/@coverPhotoPath" class="img-fluid" />
         </div>
-        <div class="col-md-8 ">
-            <h1 class="display-4">@category.Name</h1>
-            <p class="lead">@category.Description</p>
-            <hr class="my-4">
-            <p>现在预定享受7折优惠！快来看看近期优惠套餐!</p>
-            <a class="btn btn-primary btn" href="#" role="button">查看套餐</a>
+        <div class="col-md-8 py-5">
+            <div class="as-background-wrapper">
+                @if (category.BackgroundImage != null)
+                {
+                    <img src="/@category.BackgroundImage.Path_Big" class="as-background" />
+                }
+            </div>
+            <div class="position-relative">
+                <h1 class="display-4">@category.Name</h1>
+                <p class="lead">@category.Description</p>
+                <hr class="my-4">
+                <p><b>现在预定享受7折优惠！快来看看近期优惠套餐!</b></p>
+                <a class="btn btn-primary btn" href="#" role="button">查看套餐</a>
+            </div>
         </div>
     </div>
-    @*<img src="https://wallsdesk.com/wp-content/uploads/2016/11/Winter-Girl-Computer-Wallpaper.jpg" class="category-background" />*@
 </div>
+
+<div class="container-fluid col-md-10">
+    <div class="group-title">
+        <span class="group-title-line"></span>
+        <span class="group-title-content">经典案例 / Like</span>
+    </div>
+    @if (Model != null)
+    {
+        <div class="row">
+            @foreach (Album album in Model)
+            {
+
+            <div class="col-md-4 px-2 zoom mb-4 ">
+                <div class="card shadow">
+                    <a href="www.google.com" class="clear-a-style">
+                        <img class="card-img-top " src="@album.CoverPhoto.Path_Middle" alt="Card image cap">
+                        <div class="card-body">
+                            <div class="card-title justify-content-between  d-flex  align-items-center">
+                                <h5 class="d-inline mb-0">@album.Title</h5>
+                                <span class="badge badge-primary badge-pill">@album.Photos.Count()</span>
+                            </div>
+                            @*<p class="card-text">@album.Description</p>*@
+                            <p class="card-text"><small class="text-muted">更新时间：@album.LastUpdate.ToLocalTime().ToString("dd-mm-yyyy")</small></p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            }
+
+        </div>
+    }
+</div>
+

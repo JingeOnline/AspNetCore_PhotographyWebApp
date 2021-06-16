@@ -44,17 +44,25 @@
                         <img src="@coverPath" class="img-fluid" />
                     </div>
                     <div class="col-md-8">
-                        <h5 class="card-title">@category.Name</h5>
-                        <p class="card-text text-left">@category.Description</p>
-                        @{
-                            int albumCount = 0;
-                            if (category.Albums != null)
-                            {
-                                albumCount = category.Albums.Count();
-                            }
-                        }
+                        @if (category.BackgroundImage != null)
+                        {
+                            <div class="as-background-wrapper">
+                                <img src="/@category.BackgroundImage.Path_Big" class="as-background" />
+                            </div>
 
-                        <p class="card-text text-left my-0"><small class="text-muted">相册数量：@albumCount</small></p>
+                        }
+                        <div class="position-relative" >
+                            <h5 class="card-title">@category.Name</h5>
+                            <p class="card-text text-left">@category.Description</p>
+                            @{
+                                int albumCount = 0;
+                                if (category.Albums != null)
+                                {
+                                    albumCount = category.Albums.Count();
+                                }
+                            }
+                            <p class="card-text text-left my-0"><small class="text-muted">相册数量：@albumCount</small></p>
+                        </div>
                     </div>
                 </div>
                 @if (albumCount > 0)

@@ -20,8 +20,15 @@ namespace PhotographyWebAppCore.Models
         public List<Album> Albums { get; set; }
 
         [ForeignKey(nameof(CoverPhotoId))]
+        [Display(Name="封面图片")]
         public Photo CoverPhoto { get; set; }
+        [Display(Name = "封面图片")]
         public int? CoverPhotoId { get; set; }
 
+        [ForeignKey(nameof(BackgroundImageId))]
+        [Display(Name ="背景图片")]
+        public Photo BackgroundImage { get; set; }
+        [Display(Name = "背景图片")]
+        public int? BackgroundImageId { get; set; }
     }
 }

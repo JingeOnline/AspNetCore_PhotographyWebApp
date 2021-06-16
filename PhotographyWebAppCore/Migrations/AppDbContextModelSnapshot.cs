@@ -293,8 +293,8 @@ namespace PhotographyWebAppCore.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(64)")
-                        .HasMaxLength(64);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<DateTime>("UploadDateTime")
                         .HasColumnType("datetime2");
@@ -315,6 +315,9 @@ namespace PhotographyWebAppCore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("BackgroundImageId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CoverPhotoId")
                         .HasColumnType("int");
 
@@ -329,6 +332,8 @@ namespace PhotographyWebAppCore.Migrations
                         .HasMaxLength(64);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BackgroundImageId");
 
                     b.HasIndex("CoverPhotoId");
 
@@ -437,6 +442,10 @@ namespace PhotographyWebAppCore.Migrations
 
             modelBuilder.Entity("PhotographyWebAppCore.Models.PhotoCategory", b =>
                 {
+                    b.HasOne("PhotographyWebAppCore.Models.Photo", "BackgroundImage")
+                        .WithMany()
+                        .HasForeignKey("BackgroundImageId");
+
                     b.HasOne("PhotographyWebAppCore.Models.Photo", "CoverPhoto")
                         .WithMany()
                         .HasForeignKey("CoverPhotoId");
